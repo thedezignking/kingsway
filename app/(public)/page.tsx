@@ -3,8 +3,7 @@ import { AnalyticsEvent } from "@/lib/analytics/events";
 import { Wordmark } from "@/components/shared/Wordmark";
 import { Hero } from "@/components/landing/Hero";
 import { ScrollJourney } from "@/components/landing/ScrollJourney";
-import { FAQ } from "@/components/landing/FAQ";
-import { FinalCTA } from "@/components/landing/FinalCTA";
+import { PostJourneyLayers } from "@/components/landing/PostJourneyLayers";
 import { BecomeKingLink } from "@/components/landing/BecomeKingLink";
 import { Footer } from "@/components/shared/Footer";
 
@@ -19,8 +18,7 @@ export default function LandingPage() {
       <main>
         <Hero />
         <ScrollJourney />
-        <FAQ />
-        <FinalCTA />
+        <PostJourneyLayers />
       </main>
       <Footer />
     </div>

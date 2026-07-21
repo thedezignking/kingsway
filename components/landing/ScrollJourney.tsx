@@ -6,27 +6,27 @@ import { AnalyticsEvent, track } from "@/lib/analytics/events";
 const SCENES = [
   {
     id: "recognition",
-    eyebrow: "The part no one sees",
-    title: "Building can get quiet.",
-    body: "There is always another video, thread or book to consume. But information does not always answer the questions that show up when it is time to do the work.",
+    eyebrow: "The private part",
+    title: "You are carrying more than people see.",
+    body: "There is the thing you are building, and there is the person trying to keep going while building it. Some questions do not need more content. They need a room where they can be said plainly.",
     questions: [
-      "Am I building the right thing?",
-      "Why does this feel harder than it should?",
-      "Who can I say that to without pretending?",
+      "What are you really building right now?",
+      "What has been heavy lately?",
+      "What would be easier to say around people who understand?",
     ],
   },
   {
     id: "kingshour",
-    eyebrow: "Once a month",
-    title: "Bring the month as it really was.",
-    body: "On the last Sunday of every month, we gather online for KingsHour. We talk about what we tried, where we got stuck, what changed, and what we are carrying into the next month. Then we return to the work.",
-    facts: ["Last Sunday", "Online", "Honest conversation"],
+    eyebrow: "KingsHour",
+    title: "Bring the month as it actually was.",
+    body: "On the last Sunday of the month, we meet online. Not to perform progress. To look at what happened, what stayed difficult, what moved, and what each person is carrying back into the work.",
+    facts: ["Last Sunday", "Online", "Honest room"],
   },
   {
     id: "census",
-    eyebrow: "Before KingsHour",
-    title: "First, we listen.",
-    body: "The King’s Census is our first conversation with you. It is not an application or a test. It gives us a clearer picture of the people in the room—their seasons, ambitions, questions and realities—before we gather.",
+    eyebrow: "First, the Census",
+    title: "Before we gather, we listen.",
+    body: "The King’s Census is where the relationship starts. A few thoughtful questions help us understand who is here, what they are building, and what kind of room KingsHour needs to become.",
   },
 ] as const;
 
@@ -35,6 +35,7 @@ export function ScrollJourney() {
   const activeLineRef = useRef<HTMLSpanElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const viewed = useRef(new Set<number>());
+  const previousScene = activeIndex > 0 ? SCENES[activeIndex - 1] : null;
 
   useEffect(() => {
     let frame = 0;
@@ -86,6 +87,10 @@ export function ScrollJourney() {
             <span ref={activeLineRef} className="journey-line__active" />
           </div>
 
+          <p className="journey-previous-title" aria-hidden="true">
+            {previousScene?.title}
+          </p>
+
           {SCENES.map((scene, index) => {
             const state = index === activeIndex ? "active" : index === activeIndex - 1 ? "previous" : "hidden";
             return (
@@ -119,7 +124,7 @@ export function ScrollJourney() {
         <style>{`
           .journey-enhanced{height:auto!important;margin:1rem auto 4rem;padding:0 1.5rem}
           .journey-enhanced .journey-stage{position:relative;height:auto;overflow:visible}
-          .journey-enhanced .journey-line{display:none}
+          .journey-enhanced .journey-line,.journey-enhanced .journey-previous-title{display:none}
           .journey-enhanced .journey-scene{position:relative;top:auto;margin-left:1.1rem;padding:3.5rem 0 3.5rem 3rem;border-left:1px dotted var(--line);opacity:1;transform:none}
           .journey-enhanced .journey-node{top:4rem;left:-.35rem;background:var(--accent)}
           .journey-enhanced .journey-scene__copy{width:auto;max-width:42rem;margin:0}

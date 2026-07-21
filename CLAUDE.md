@@ -163,6 +163,16 @@ _Last updated: 2026-07-21_
   by loosening hero/journey/FAQ/CTA tracking, reducing public heading weight, and easing the wordmark
   back from the compressed startup-style treatment. The new open landing structure stays intact; only
   the over-tight type drift from the latest pass was corrected.
+- **Landing responsiveness + flow refinement (2026-07-21):** added the mono hero label
+  "A COMMUNITY OF BUILDERS"; replaced fixed hero spacing with viewport-aware clamps; settled the hero
+  headline at a controlled middle width; changed the hero crown mark background to the ink/
+  secondary-button color; and restored the last committed portrait-cluster geometry after the
+  short-screen compression pass made the hero visual feel distorted. The
+  tablet journey breakpoint is now `<=1100px`, with a separate faded previous-heading layer on
+  tablet/mobile instead of overlapping article boxes. FAQ and final CTA now resolve as a two-step
+  post-journey layered section; the CTA is simplified to one heading, one support sentence and one
+  button. Verified no horizontal overflow, no journey copy overlap, active copy visibility,
+  reduced-motion stacked layout and no-JS fallback.
 - **GitHub connected** — project is its own git repo (isolated from the home `velora-atelier` repo),
   pushed to `github.com/thedezignking/kingsway`. Live **Supabase + Resend keys live in `.env.local`**
   (gitignored); `.env.example` is a secret-free template. `NEXT_PUBLIC_FOUNDER_WHATSAPP` is a wa.link
