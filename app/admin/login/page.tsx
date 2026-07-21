@@ -24,7 +24,7 @@ export default async function AdminLoginPage({
     <AuthCard
       eyebrow="Admin access"
       title="Sign in to operations"
-      description="Use your approved Kingsway administrator email. A separate authenticator code is required after the secure link."
+      description="Use your approved administrator email and password. A separate authenticator code is required next."
     >
       <LoginForm destination={destination} />
     </AuthCard>

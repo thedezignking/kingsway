@@ -9,7 +9,6 @@ import {
   EMAIL_REPLY_TO,
 } from "@/lib/email/resend";
 import { welcomeEmail } from "@/lib/email/templates";
-import type { CommunicationType } from "@/lib/supabase/types";
 
 function appUrl(): string {
   const configured = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "");
@@ -32,31 +31,13 @@ export type Segment =
   | { kind: "missed_last_kingshour" }
   | { kind: "custom"; memberIds: string[] };
 
-/** Log a send to the member's timeline. Best-effort; never throws to the caller. */
-async function logCommunication(
-  memberId: string,
-  type: CommunicationType,
-  subject: string,
-  providerId: string | null,
-) {
-  const db = createServiceSupabaseOrNull();
-  if (!db) return;
-  await db.from("communications").insert({
-    member_id: memberId,
-    type,
-    subject,
-    provider_id: providerId,
-    sent_at: new Date().toISOString(),
-  });
-}
-
 /**
  * Welcome email on census completion (PRD §4.4 #1). Fetches the member, renders + sends via Resend
  * (if configured), and logs the send. If email isn't configured, no-ops gracefully.
  */
 export async function sendWelcome(memberId: string): Promise<void> {
   const db = createServiceSupabaseOrNull();
-  if (!db) return;
+  if (!db || !emailConfigured()) return;
 
   const { data: member } = await db
     .from("members")
@@ -67,30 +48,45 @@ export async function sendWelcome(memberId: string): Promise<void> {
 
   const rendered = welcomeEmail({ firstName: member.first_name, appUrl: appUrl() });
 
-  let providerId: string | null = null;
-  if (emailConfigured()) {
-    try {
-      const { data, error } = await getResend().emails.send({
+  // Claim the one allowed welcome communication before contacting Resend. The partial unique index
+  // makes this atomic across refreshes, retries, multiple tabs, and concurrent server requests.
+  const { data: claim, error: claimError } = await db
+    .from("communications")
+    .insert({
+      member_id: memberId,
+      type: "welcome",
+      subject: rendered.subject,
+      provider_id: null,
+      sent_at: new Date().toISOString(),
+    })
+    .select("id")
+    .single();
+
+  if (claimError?.code === "23505") return; // already welcomed
+  if (claimError || !claim) throw claimError ?? new Error("Welcome delivery claim failed");
+
+  try {
+    const { data, error } = await getResend().emails.send(
+      {
         from: EMAIL_FROM,
         replyTo: EMAIL_REPLY_TO,
         to: member.email,
         subject: rendered.subject,
         html: rendered.html,
         text: rendered.text,
-      });
-      if (error) {
-        console.error("Welcome email rejected by Resend", {
-          name: error.name,
-          message: error.message,
-        });
-      }
-      providerId = data?.id ?? null;
-    } catch (error) {
-      console.error("Welcome email send failed", error);
-      // Delivery failed — still record intent so admin can see/retry. providerId stays null.
+      },
+      { idempotencyKey: `welcome/${memberId}` },
+    );
+    if (error || !data?.id) {
+      throw error ?? new Error("Resend did not return a message id");
     }
+
+    await db.from("communications").update({ provider_id: data.id }).eq("id", claim.id);
+  } catch (error) {
+    // Release only failed claims so a later controlled completion retry can try delivery again.
+    await db.from("communications").delete().eq("id", claim.id).is("provider_id", null);
+    console.error("Welcome email send failed", error);
   }
-  await logCommunication(memberId, "welcome", rendered.subject, providerId);
 }
 
 // ---- Admin segmented sends (wired in the Email-page pass) ----------------------------------

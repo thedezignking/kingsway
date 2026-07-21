@@ -7,6 +7,7 @@ import type { AdminRole } from "@/lib/supabase/types";
 export type { AdminRole } from "@/lib/supabase/types";
 
 export const ADMIN_NEXT_COOKIE = "kingsway-admin-next";
+export const ADMIN_FLOW_COOKIE = "kingsway-admin-flow";
 
 export interface AdminUser {
   id: string;
@@ -101,6 +102,6 @@ export function can(role: AdminRole, action: AdminAction): boolean {
 /** Prevent open redirects through the login/MFA `next` parameter. */
 export function safeAdminDestination(value: string | null | undefined): string {
   if (!value || !value.startsWith("/admin") || value.startsWith("//")) return "/admin";
-  if (/^\/admin\/(login|mfa|unauthorized)(\/|\?|$)/.test(value)) return "/admin";
+  if (/^\/admin\/(login|mfa|password|unauthorized)(\/|\?|$)/.test(value)) return "/admin";
   return value;
 }

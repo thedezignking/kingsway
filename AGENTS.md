@@ -222,20 +222,32 @@ _Last updated: 2026-07-21_
   footer, site footer, and census ending. Email design and tracking settings were otherwise left
   unchanged. Gmail category placement remains recipient-controlled; the established `hello@`
   identity is the deliverability improvement, not a visual redesign.
+- **Welcome email idempotency (2026-07-21):** welcome delivery is now a one-time member lifecycle
+  event, not a welcome-page side effect. [0002_welcome_email_idempotency.sql](./supabase/migrations/0002_welcome_email_idempotency.sql)
+  removes historical duplicate welcome logs and adds a partial unique index allowing one welcome
+  communication per King. `sendWelcome` atomically claims that row before contacting Resend and also
+  uses a deterministic Resend idempotency key, covering refreshes, retries, multiple tabs, and
+  concurrent completion requests. The migration has been applied to the live Supabase project.
 - **Admin access control + Operations Desk UI — BUILT (2026-07-21):** `/admin` dashboard routes now
   live inside a server-protected route group. Supabase Auth verifies the request; protected
   `app_metadata` explicitly grants an active role; **TOTP AAL2 is mandatory** before any dashboard
-  or `/api/admin/*` access. Login is passwordless (one-time email link), with callback, first-use MFA
-  enrollment, returning-session MFA verification, sign-out, safe internal redirects, no public
-  signup, `noindex`, and independent 401/403 API checks. First live Super Admin provisioned:
+  or `/api/admin/*` access. Login uses the approved admin email + password, with a branded recovery/
+  first-password email, a 14-character minimum, first-use MFA enrollment, returning-session MFA
+  verification, sign-out, safe internal redirects, no public signup, `noindex`, and independent
+  401/403 API checks. First live Super Admin provisioned:
   `divineukanwa@gmail.com`. Role matrix remains extensible. Admin visual direction is deliberately
   operational: Hanken interface + IBM Plex Mono utility labels, precise left rail, warm neutral
   surfaces, brass only for state/focus; no member-facing serif, crown, Cadence, or celebration.
-  Verified: `npx tsc --noEmit`; production `npm run build` (23 routes); anonymous `/admin` → 307
+  Verified: `npx tsc --noEmit`; production `npm run build` (24 routes); anonymous `/admin` → 307
   `/admin/login`, login → 200, anonymous admin API → 401. **Supabase Auth URL config is live:** Site
-  URL = `https://kingsway-steel.vercel.app`; redirect allow-list includes the production and localhost
-  `/admin/auth/callback` routes. Applied through the Management API after the dashboard save endpoint
-  returned 500; the temporary personal access token was revoked immediately after verification.
+  URL = `https://kingsway.thedezignking.com`; redirect allow-list includes the branded domain, Vercel
+  fallback, and localhost `/admin/auth/callback` routes. Applied through the Management API after the dashboard save endpoint
+  returned 500; every temporary personal access token was revoked immediately after verification.
+  **Supabase Auth custom SMTP is live through Resend** under `divineukanwa@gmail.com`, using the
+  verified `thedezignking.com` domain and a domain-scoped, sending-only credential. Auth sender is
+  `Divine from Kingsway <hello@thedezignking.com>`; the same replacement credential is installed in
+  local env and Vercel Production + Preview. The prior full-access and wrong-account Kingsway keys
+  were revoked; only the domain-scoped `Kingsway delivery` key remains for this app.
 
 - **Visual design system — "Brass & Ink" (frontend-design pass), BUILT & verified in-browser.**
   Distinctive identity for the member-facing surfaces, inspired by Wise/Linear/Notion but its own:
@@ -270,9 +282,10 @@ _Last updated: 2026-07-21_
   Follow-Up, with `.ics`). Since there's no Topic Bank seed or management UI in V1, include a minimal
   inline "add a topic" in the session-creation flow so topics can be created on the fly.
 - Build order step 7 — **Email page** (segmented sends), plus finishing **Analytics** (funnel + charts).
-- After the pushed build deploys, use `/admin/login` once to complete the Super Admin authenticator
-  enrollment. Also verify one fresh live Census submission in Gmail with the new `hello@` sender and
-  `learn@` Reply-To; inbox category cannot be forced by application code.
+- After the pushed build deploys, use `/admin/login` → **Set or reset password** once, follow the
+  emailed recovery link, choose the Super Admin password, and complete authenticator enrollment.
+  Also verify one fresh live Census submission in Gmail with the new `hello@` sender and `learn@`
+  Reply-To; inbox category cannot be forced by application code.
 
 **Known gaps / cautions**
 - No `psql`/`supabase` CLI is installed locally; schema changes are currently applied through the
@@ -310,15 +323,23 @@ _Last updated: 2026-07-21_
   `hello@thedezignking.com`; Reply-To is `learn@thedezignking.com`. Keep the designed email. Gmail
   decides inbox categories per recipient; no header or HTML switch can guarantee Primary.
 - **2026-07-21** — Admin authentication = approved Supabase Auth identity in service-controlled
-  `app_metadata` + passwordless email link + mandatory TOTP MFA (AAL2). No public signup. This avoids
-  shared/temporary passwords while preserving an extensible role model and immediate server checks.
-- **2026-07-21** — Supabase Auth production URL is `https://kingsway-steel.vercel.app`; allowed
-  redirects are the production and localhost `/admin/auth/callback` routes. Keep these synchronized
-  if the canonical domain changes, otherwise Supabase falls back to its Site URL in auth emails.
-- **2026-07-21** — Admin magic-link `emailRedirectTo` must exactly match the allow-listed callback
-  path (no `?next=` query). The intended protected destination is stored in the short-lived,
-  HttpOnly `kingsway-admin-next` cookie and cleared by the callback. A mismatched redirect causes
-  Supabase to fall back to the public Site URL.
+  `app_metadata` + account-specific password + mandatory TOTP MFA (AAL2). No shared gate and no public
+  signup. Password creation/recovery uses Supabase's one-time recovery link; ordinary sign-in does not
+  depend on email delivery.
+- **2026-07-21** — Supabase Auth mail uses Resend custom SMTP owned by `divineukanwa@gmail.com`; the
+  credential is sending-only and scoped to the verified `thedezignking.com` domain. Auth identity is
+  `Divine from Kingsway <hello@thedezignking.com>`. Keep it distinct from unrelated Resend accounts.
+- **2026-07-21** — Welcome email delivery is exactly-once per King: database partial unique index +
+  pre-send communication claim + deterministic Resend idempotency key. A page refresh or repeated
+  Census completion may re-render Welcome but must not send another welcome email.
+- **2026-07-21** — Supabase Auth canonical URL is `https://kingsway.thedezignking.com`; allowed
+  redirects are the branded domain, `kingsway-steel.vercel.app` fallback, and localhost
+  `/admin/auth/callback` routes. Keep these synchronized if the canonical domain changes, otherwise
+  Supabase falls back to its Site URL in auth emails.
+- **2026-07-21** — Admin recovery `redirectTo` must exactly match the allow-listed callback path (no
+  `?next=` query). The intended protected destination and recovery-flow marker are stored in
+  short-lived HttpOnly cookies and cleared by the callback. A mismatched redirect causes Supabase to
+  fall back to the public Site URL.
 
 ## Open questions to confirm before building (carried from PRD §7)
 
