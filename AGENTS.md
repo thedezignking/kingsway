@@ -267,6 +267,11 @@ _Last updated: 2026-07-21_
   browser client. The former client call could stall before reaching `/auth/v1/user`; the server
   action validates the approved admin session and both password fields, saves through the
   cookie-aware server client, reports a definite error, and redirects to MFA only after success.
+- **Reliable MFA completion (2026-07-21):** authenticator factor discovery, stale unverified-factor
+  cleanup, TOTP enrollment, and challenge verification now use the cookie-aware server client. The
+  enrollment page renders its QR code from server-prepared data instead of waiting on a browser auth
+  client; both enrollment and returning-session codes submit through `verifyAdminMfa` and redirect
+  only after AAL2 verification succeeds.
 
 - **Visual design system — "Brass & Ink" (frontend-design pass), BUILT & verified in-browser.**
   Distinctive identity for the member-facing surfaces, inspired by Wise/Linear/Notion but its own:
@@ -373,6 +378,9 @@ _Last updated: 2026-07-21_
   Recovery establishes the secure cookie session; the server action revalidates the approved admin,
   updates the password, then redirects to MFA. This avoids browser auth-lock stalls during first-time
   setup.
+- **2026-07-21** — Admin MFA setup and verification are server-managed for the same reason. Do not
+  reintroduce browser Supabase auth calls into the password/MFA path; render prepared enrollment data
+  from the protected page and submit six-digit challenges through server actions.
 
 ## Open questions to confirm before building (carried from PRD §7)
 

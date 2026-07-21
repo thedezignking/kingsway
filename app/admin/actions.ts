@@ -14,6 +14,7 @@ import {
 export type LoginState = { error: string | null };
 export type PasswordResetState = { error: string | null; sent: boolean };
 export type PasswordUpdateState = { error: string | null };
+export type MfaVerifyState = { error: string | null };
 
 const MIN_ADMIN_PASSWORD_LENGTH = 14;
 
@@ -121,6 +122,38 @@ export async function updateAdminPassword(
   }
 
   redirect(`/admin/mfa/enroll?next=${encodeURIComponent(destination)}`);
+}
+
+export async function verifyAdminMfa(
+  _previous: MfaVerifyState,
+  formData: FormData,
+): Promise<MfaVerifyState> {
+  const factorId = String(formData.get("factorId") ?? "");
+  const code = String(formData.get("code") ?? "").replace(/\D/g, "");
+  const destination = safeAdminDestination(String(formData.get("next") ?? ""));
+
+  if (!factorId || !/^\d{6}$/.test(code)) {
+    return { error: "Enter the current six-digit code from your authenticator." };
+  }
+
+  const admin = await getCurrentAdmin();
+  if (!admin) {
+    return { error: "Your admin session has expired. Sign in again." };
+  }
+
+  const { error } = await createServerSupabase().auth.mfa.challengeAndVerify({
+    factorId,
+    code,
+  });
+  if (error) {
+    console.error("Admin MFA verification failed", {
+      name: error.name,
+      message: error.message,
+    });
+    return { error: "That code was not accepted. Wait for a new code and try again." };
+  }
+
+  redirect(destination);
 }
 
 export async function signOut(): Promise<void> {
