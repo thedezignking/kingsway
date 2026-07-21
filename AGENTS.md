@@ -315,6 +315,10 @@ _Last updated: 2026-07-21_
 - **2026-07-21** — Supabase Auth production URL is `https://kingsway-steel.vercel.app`; allowed
   redirects are the production and localhost `/admin/auth/callback` routes. Keep these synchronized
   if the canonical domain changes, otherwise Supabase falls back to its Site URL in auth emails.
+- **2026-07-21** — Admin magic-link `emailRedirectTo` must exactly match the allow-listed callback
+  path (no `?next=` query). The intended protected destination is stored in the short-lived,
+  HttpOnly `kingsway-admin-next` cookie and cleared by the callback. A mismatched redirect causes
+  Supabase to fall back to the public Site URL.
 
 ## Open questions to confirm before building (carried from PRD §7)
 

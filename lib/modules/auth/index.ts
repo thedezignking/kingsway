@@ -6,6 +6,8 @@ import type { AdminRole } from "@/lib/supabase/types";
 
 export type { AdminRole } from "@/lib/supabase/types";
 
+export const ADMIN_NEXT_COOKIE = "kingsway-admin-next";
+
 export interface AdminUser {
   id: string;
   email: string;

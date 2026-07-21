@@ -1,9 +1,9 @@
 "use server";
 
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
-import { safeAdminDestination } from "@/lib/modules/auth";
+import { ADMIN_NEXT_COOKIE, safeAdminDestination } from "@/lib/modules/auth";
 
 export type LoginState = { error: string | null; sent: boolean };
 
@@ -18,7 +18,17 @@ export async function requestAdminLink(
   const requestOrigin = headers().get("origin");
   const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "");
   const origin = requestOrigin || configuredOrigin || "http://localhost:3000";
-  const callback = `${origin}/admin/auth/callback?next=${encodeURIComponent(destination)}`;
+  // Keep the redirect URL identical to the Supabase allow-list entry. The intended dashboard
+  // destination lives in a short-lived HttpOnly cookie so query parameters cannot trigger a
+  // fallback to the public Site URL.
+  const callback = `${origin}/admin/auth/callback`;
+  cookies().set(ADMIN_NEXT_COOKIE, destination, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: origin.startsWith("https://"),
+    maxAge: 10 * 60,
+    path: "/admin",
+  });
 
   const { error } = await createServerSupabase().auth.signInWithOtp({
     email,
