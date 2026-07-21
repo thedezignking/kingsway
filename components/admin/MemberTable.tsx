@@ -12,21 +12,22 @@ export function MemberTable({ members, query }: { members: Member[]; query?: str
           name="q"
           defaultValue={query}
           placeholder="Search name, email, country"
-          className="w-full max-w-sm rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm outline-none focus:border-black dark:border-gray-700 dark:focus:border-white"
+          spellCheck={false}
+          className="w-full max-w-sm rounded-md border border-line bg-white px-3 py-2.5 text-sm outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
         />
-        <button type="submit" className="rounded-md border border-gray-300 px-3 py-2 text-sm dark:border-gray-700">
+        <button type="submit" className="rounded-md border border-line bg-white px-4 py-2.5 text-sm font-medium transition-colors hover:border-muted/60">
           Search
         </button>
       </form>
 
       {members.length === 0 ? (
-        <p className="text-sm text-gray-500">
+        <p className="border border-dashed border-line p-6 text-sm text-muted">
           {query ? "No Kings match that search." : "No Kings yet."}
         </p>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border border-line bg-white/70">
           <table className="w-full text-left text-sm">
-            <thead className="text-xs uppercase tracking-wide text-gray-400">
+            <thead className="border-b border-line bg-[#f1eee6]/70 font-mono text-[10px] uppercase tracking-wider text-muted">
               <tr>
                 <th className="py-2 pr-4">Name</th>
                 <th className="py-2 pr-4">Country</th>
@@ -36,17 +37,17 @@ export function MemberTable({ members, query }: { members: Member[]; query?: str
             </thead>
             <tbody>
               {members.map((m) => (
-                <tr key={m.id} className="border-t border-gray-100 dark:border-gray-800">
+                <tr key={m.id} className="border-t border-line transition-colors first:border-t-0 hover:bg-[#fbfaf7]">
                   <td className="py-2 pr-4">
                     <Link href={`/admin/kings/${m.id}`} className="font-medium hover:underline">
                       {m.first_name}
                     </Link>
                     {m.status === "incomplete" && (
-                      <span className="ml-2 rounded bg-yellow-100 px-1.5 py-0.5 text-xs text-yellow-900 dark:bg-yellow-900/30 dark:text-yellow-200">
+                      <span className="ml-2 rounded-sm bg-brass-soft/60 px-1.5 py-0.5 font-mono text-[10px] text-fg">
                         incomplete
                       </span>
                     )}
-                    <div className="text-xs text-gray-400">{m.email}</div>
+                    <div className="text-xs text-muted">{m.email}</div>
                   </td>
                   <td className="py-2 pr-4">{m.country ?? "—"}</td>
                   <td className="py-2 pr-4">{m.status}</td>

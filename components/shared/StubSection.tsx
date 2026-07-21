@@ -13,15 +13,15 @@ export function StubSection({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="rounded-lg border border-dashed border-gray-300 p-4 dark:border-gray-700">
+    <section className="rounded-md border border-dashed border-line bg-white/40 p-4">
       <div className="flex items-baseline justify-between gap-4">
         <h2 className="text-sm font-semibold">{title}</h2>
-        <span className="text-xs text-gray-500">{prd}</span>
+        <span className="font-mono text-[10px] uppercase tracking-wider text-muted">{prd}</span>
       </div>
       {children ? (
-        <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">{children}</div>
+        <div className="mt-2 text-sm text-muted">{children}</div>
       ) : (
-        <p className="mt-2 text-sm text-gray-500">Scaffold placeholder — not yet built.</p>
+        <p className="mt-2 text-sm text-muted">Scaffold placeholder — not yet built.</p>
       )}
     </section>
   );

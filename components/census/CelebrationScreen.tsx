@@ -8,6 +8,7 @@ import { buildIcs } from "@/lib/email/ics";
 import { nextKingsHour } from "@/lib/kingshour/schedule";
 import { whatsappLink } from "@/lib/whatsapp";
 import { Crown } from "@/components/shared/Crown";
+import { BRAND_LINE_DISPLAY } from "@/lib/brand";
 
 export function CelebrationScreen({ firstName }: { firstName?: string }) {
   const copy = celebration(firstName);
@@ -60,6 +61,9 @@ export function CelebrationScreen({ firstName }: { firstName?: string }) {
           Connect on WhatsApp
         </a>
         <p className="mt-1 font-mono text-xs text-muted">{copy.emailNote}</p>
+        <p className="mt-3 font-mono text-[10px] tracking-[0.16em] text-muted/70">
+          {BRAND_LINE_DISPLAY}
+        </p>
       </div>
     </div>
   );

@@ -2,14 +2,18 @@
 import { getInsights } from "@/lib/modules/analytics";
 import { InsightsPanels } from "@/components/admin/InsightsPanels";
 import { NotConfigured } from "@/components/admin/NotConfigured";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminInsightsPage() {
   const insights = await getInsights();
   return (
-    <section className="flex flex-col gap-4">
-      <h1 className="text-base font-semibold">Insights</h1>
+    <section>
+      <AdminPageHeader
+        title="Insights"
+        description="Patterns from the King’s Census that should influence the next decision."
+      />
       {insights.configured ? <InsightsPanels insights={insights} /> : <NotConfigured />}
     </section>
   );

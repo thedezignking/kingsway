@@ -23,6 +23,12 @@ export type TopicPillar =
   | "relationships"
   | "mindset";
 export type TopicStatus = "draft" | "active" | "archived";
+export type AdminRole =
+  | "super_admin"
+  | "community_lead"
+  | "moderator"
+  | "content_manager"
+  | "operations";
 
 export interface Member {
   id: string;

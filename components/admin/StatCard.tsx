@@ -9,10 +9,10 @@ export function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-md border border-gray-200 p-3 dark:border-gray-800">
-      <div className="text-xs uppercase tracking-wide text-gray-500">{label}</div>
-      <div className="mt-1 text-2xl font-semibold tabular-nums">{value}</div>
-      {hint && <div className="mt-1 text-xs text-gray-500">{hint}</div>}
+    <div className="border border-line bg-white/70 p-4">
+      <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted">{label}</div>
+      <div className="mt-3 text-3xl font-semibold tabular-nums tracking-[-0.04em]">{value}</div>
+      {hint && <div className="mt-2 text-xs text-muted">{hint}</div>}
     </div>
   );
 }

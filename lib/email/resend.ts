@@ -15,7 +15,14 @@ export function emailConfigured(): boolean {
   return hasEnv("RESEND_API_KEY");
 }
 
-/** Default From identity (consistent across all templates, PRD §4.4). */
-const configuredFrom = process.env.KINGSWAY_EMAIL_FROM || "hello@kingsway.example";
+/**
+ * One recognizable human sender across every Kingsway email. The address defaults to the
+ * established hello@ mailbox; deployment can override it without changing the display name.
+ */
+const configuredFrom =
+  process.env.KINGSWAY_EMAIL_FROM_ADDRESS ||
+  "hello@thedezignking.com";
 const configuredAddress = configuredFrom.match(/<([^>]+)>/)?.[1] || configuredFrom;
 export const EMAIL_FROM = `Divine from Kingsway <${configuredAddress.trim()}>`;
+export const EMAIL_REPLY_TO =
+  process.env.KINGSWAY_EMAIL_REPLY_TO?.trim() || "learn@thedezignking.com";

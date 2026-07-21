@@ -214,6 +214,26 @@ _Last updated: 2026-07-21_
   NOTE: run `npm run dev` and `npm run build` against separate `.next` state — a production build
   reused by the dev server causes spurious whole-document hydration warnings (wipe `.next` if seen).
 
+- **Welcome email identity + brand line (2026-07-21):** sender is now consistently
+  `Divine from Kingsway <hello@thedezignking.com>` with replies routed to
+  `learn@thedezignking.com`. The sentence uses **“the King’s way” in the normal body face** (brass
+  retained; serif/italic emphasis removed). Canonical line lives in [lib/brand.ts](./lib/brand.ts):
+  `Do it the King’s way.` / display lockup `DO IT THE KING’S WAY`; used with restraint in the email
+  footer, site footer, and census ending. Email design and tracking settings were otherwise left
+  unchanged. Gmail category placement remains recipient-controlled; the established `hello@`
+  identity is the deliverability improvement, not a visual redesign.
+- **Admin access control + Operations Desk UI — BUILT (2026-07-21):** `/admin` dashboard routes now
+  live inside a server-protected route group. Supabase Auth verifies the request; protected
+  `app_metadata` explicitly grants an active role; **TOTP AAL2 is mandatory** before any dashboard
+  or `/api/admin/*` access. Login is passwordless (one-time email link), with callback, first-use MFA
+  enrollment, returning-session MFA verification, sign-out, safe internal redirects, no public
+  signup, `noindex`, and independent 401/403 API checks. First live Super Admin provisioned:
+  `divineukanwa@gmail.com`. Role matrix remains extensible. Admin visual direction is deliberately
+  operational: Hanken interface + IBM Plex Mono utility labels, precise left rail, warm neutral
+  surfaces, brass only for state/focus; no member-facing serif, crown, Cadence, or celebration.
+  Verified: `npx tsc --noEmit`; production `npm run build` (23 routes); anonymous `/admin` → 307
+  `/admin/login`, login → 200, anonymous admin API → 401.
+
 - **Visual design system — "Brass & Ink" (frontend-design pass), BUILT & verified in-browser.**
   Distinctive identity for the member-facing surfaces, inspired by Wise/Linear/Notion but its own:
   warm porcelain + deep royal indigo-ink + a single **brass** jewel (crown, primary CTA, focus,
@@ -246,22 +266,19 @@ _Last updated: 2026-07-21_
   (`/rsvp/[sessionId]`), attendance marking, and the three lifecycle emails (Invitation/Reminder/
   Follow-Up, with `.ics`). Since there's no Topic Bank seed or management UI in V1, include a minimal
   inline "add a topic" in the session-creation flow so topics can be created on the fly.
-- Build order step 7 — **Email page** (segmented sends), plus finishing **Analytics** (funnel + charts)
-  and admin **auth** (replace the allow-through stub with real Super Admin gating).
-- Deploy the redesigned welcome email and verify one fresh live Census submission end to end in
-  Gmail, including sender name, public-domain CTA, responsive rendering, and inbox placement.
+- Build order step 7 — **Email page** (segmented sends), plus finishing **Analytics** (funnel + charts).
+- After the pushed build deploys, use `/admin/login` once to complete the Super Admin authenticator
+  enrollment. Also verify one fresh live Census submission in Gmail with the new `hello@` sender and
+  `learn@` Reply-To; inbox category cannot be forced by application code.
 
 **Known gaps / cautions**
 - No `psql`/`supabase` CLI is installed locally; schema changes are currently applied through the
   Supabase dashboard.
 - Census copy in [lib/census/copy.ts](./lib/census/copy.ts) + landing/email strings are **first-pass**,
   on-voice but not final — refine without touching the engine.
-- Design: admin **sub-components** (StatCard, ChartPanel, MemberTable, MemberProfile, InsightsPanels,
-  NotConfigured) still use `gray-*` utilities — fine on the warm surface but swap to `line`/`muted`
-  tokens for full cohesion. Dark-mode ink blocks (FinalCTA, HowItWorks last card) sit only slightly
+- Design: dark-mode ink blocks (FinalCTA, HowItWorks last card) sit only slightly
   darker than the dark surface — acceptable, could add a hairline for more definition. `next/font/
   google` (Fraunces/Hanken/IBM Plex Mono) fetches at build — needs network on first build/dev.
-- Admin area is **not access-controlled** yet (auth is a stub that allows everyone through).
 - `lib/supabase/types.ts` is hand-written; regenerate from Supabase once a project exists.
 - GitHub is connected at `thedezignking/kingsway`; this folder is an isolated repository on `main`.
 
@@ -283,6 +300,15 @@ _Last updated: 2026-07-21_
   field** (two name pages was bad UX); greetings extract the first token. **Country + state/city are
   one screen** (composite `location`): after picking the country, the state/city field auto-appears
   under it — no separate screen, and no more state landing awkwardly after the phone number.
+- **2026-07-21** — Canonical brand line is **“Do it the King’s way.”** (display lockup uppercase).
+  Use it at high-value brand moments, not as repetitive decoration. In welcome-email prose,
+  “the King’s way” stays in the regular body font and brass color.
+- **2026-07-21** — Email identity is **Divine from Kingsway** via established sender
+  `hello@thedezignking.com`; Reply-To is `learn@thedezignking.com`. Keep the designed email. Gmail
+  decides inbox categories per recipient; no header or HTML switch can guarantee Primary.
+- **2026-07-21** — Admin authentication = approved Supabase Auth identity in service-controlled
+  `app_metadata` + passwordless email link + mandatory TOTP MFA (AAL2). No public signup. This avoids
+  shared/temporary passwords while preserving an extensible role model and immediate server checks.
 
 ## Open questions to confirm before building (carried from PRD §7)
 

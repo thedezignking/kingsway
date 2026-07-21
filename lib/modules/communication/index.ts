@@ -2,7 +2,12 @@
 // the member's timeline (communications). Automation is trigger-based; admin sends are segmented.
 import "server-only";
 import { createServiceSupabaseOrNull } from "@/lib/supabase/server";
-import { getResend, emailConfigured, EMAIL_FROM } from "@/lib/email/resend";
+import {
+  getResend,
+  emailConfigured,
+  EMAIL_FROM,
+  EMAIL_REPLY_TO,
+} from "@/lib/email/resend";
 import { welcomeEmail } from "@/lib/email/templates";
 import type { CommunicationType } from "@/lib/supabase/types";
 
@@ -67,6 +72,7 @@ export async function sendWelcome(memberId: string): Promise<void> {
     try {
       const { data, error } = await getResend().emails.send({
         from: EMAIL_FROM,
+        replyTo: EMAIL_REPLY_TO,
         to: member.email,
         subject: rendered.subject,
         html: rendered.html,

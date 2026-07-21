@@ -1,6 +1,7 @@
 // Welcome email — auto, on census completion (PRD §4.4 #1).
 // A personal note from Divine, designed around Kingsway's monthly cadence.
 import type { BaseEmailData, RenderedEmail } from "./types";
+import { BRAND_LINE_DISPLAY } from "@/lib/brand";
 
 const INK = "#17152E";
 const BRASS = "#BC7C33";
@@ -18,7 +19,7 @@ export function welcomeEmail(data: BaseEmailData): RenderedEmail {
 
 There are thousands of people online, endless information to consume, and more ways than ever to do almost anything.
 
-In all of that noise, I'm glad you've decided to do it the Kingsway.
+In all of that noise, I'm glad you've decided to do it the King’s way.
 
 Welcome, King.
 
@@ -58,7 +59,7 @@ Founder, Kingsway`,
               <td style="padding:42px 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:17px;line-height:1.75;color:${INK};">
                 <p style="margin:0 0 24px;">Hey ${safeName},</p>
                 <p style="margin:0 0 24px;">There are thousands of people online, endless information to consume, and more ways than ever to do almost anything.</p>
-                <p style="margin:0 0 30px;">In all of that noise, I'm glad you've decided to do it <em style="font-family:Georgia,'Times New Roman',serif;color:${BRASS};font-size:19px;">the Kingsway.</em></p>
+                <p style="margin:0 0 30px;">In all of that noise, I'm glad you've decided to do it <span style="color:${BRASS};">the King’s way.</span></p>
                 <h1 style="margin:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:1.15;font-weight:500;letter-spacing:-0.6px;color:${INK};">Welcome, King.</h1>
                 <p style="margin:0 0 24px;">Kingsway is a place for builders: people intentionally making something and becoming someone through the process.</p>
                 <p style="margin:0 0 24px;">Once a month, on the last Sunday, we pause for <strong>KingsHour</strong>—a practical conversation about what we're building, where we're stuck, and what comes next.</p>
@@ -76,7 +77,7 @@ Founder, Kingsway`,
             </tr>
             <tr>
               <td style="padding:22px 0 0;border-top:1px solid #E5E0D6;font-family:'Courier New',monospace;font-size:10px;line-height:1.6;letter-spacing:1px;text-transform:uppercase;color:${MUTED};">
-                Build · Pause · Reflect · Learn · Continue
+                ${BRAND_LINE_DISPLAY}
               </td>
             </tr>
           </table>

@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { Wordmark } from "./Wordmark";
 import { socialLinks } from "@/lib/social";
+import { BRAND_LINE_DISPLAY } from "@/lib/brand";
 
 export function Footer() {
   const socials = socialLinks();
@@ -51,7 +52,7 @@ export function Footer() {
 
       <div className="flex items-center justify-between border-t border-line py-5 font-mono text-xs text-muted">
         <span>© {year} Kingsway</span>
-        <span>Made for builders.</span>
+        <span>{BRAND_LINE_DISPLAY}</span>
       </div>
     </footer>
   );
