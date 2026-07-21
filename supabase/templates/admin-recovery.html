@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Set your Kingsway admin password</title>
+  </head>
+  <body style="margin:0;background:#f6f2e9;color:#17152e;font-family:Arial,Helvetica,sans-serif;">
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
+      Choose your Kingsway Admin password, then connect your authenticator.
+    </div>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td align="center" style="padding:40px 16px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;background:#ffffff;border:1px solid #e7dfcf;border-radius:20px;">
+            <tr>
+              <td style="padding:38px 38px 34px;">
+                <p style="margin:0 0 28px;color:#bc7c33;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;">Kingsway Admin</p>
+                <h1 style="margin:0 0 16px;color:#17152e;font-size:30px;line-height:1.2;letter-spacing:-0.02em;">Set your admin password</h1>
+                <p style="margin:0 0 14px;color:#4f4a61;font-size:16px;line-height:1.65;">Use the secure button below to choose your Kingsway Admin password. After that, you&rsquo;ll connect your authenticator.</p>
+                <p style="margin:0 0 28px;color:#4f4a61;font-size:16px;line-height:1.65;">This link is single-use and expires shortly.</p>
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td bgcolor="#17152e" style="border-radius:999px;">
+                      <a href="{{ .SiteURL }}/admin/auth/confirm?token_hash={{ .TokenHash }}&amp;type=recovery" style="display:inline-block;padding:14px 24px;color:#fbf9f4;font-size:15px;font-weight:700;text-decoration:none;">Choose my password</a>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:28px 0 0;color:#777286;font-size:13px;line-height:1.6;">If you did not request this, you can safely ignore the email. No password will change.</p>
+              </td>
+            </tr>
+          </table>
+          <p style="margin:18px 0 0;color:#777286;font-size:12px;line-height:1.5;">Divine from Kingsway &middot; Restricted administrative access</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

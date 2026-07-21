@@ -5,6 +5,7 @@ const PUBLIC_ADMIN_PATHS = [
   "/admin/login",
   "/admin/unauthorized",
   "/admin/auth/callback",
+  "/admin/auth/confirm",
 ];
 
 export async function middleware(request: NextRequest) {

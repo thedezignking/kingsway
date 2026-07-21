@@ -97,6 +97,7 @@ lib/
   env.ts
 supabase/
   migrations/0001_init.sql   (topics table starts empty — admin-entered, no seed)
+  templates/admin-recovery.html   (source of truth for the live Supabase recovery email)
 ```
 
 **Data model** (see PRD §6 + [lib/supabase/types.ts](./lib/supabase/types.ts)): one **Member** = one
@@ -248,6 +249,16 @@ _Last updated: 2026-07-21_
   `Divine from Kingsway <hello@thedezignking.com>`; the same replacement credential is installed in
   local env and Vercel Production + Preview. The prior full-access and wrong-account Kingsway keys
   were revoked; only the domain-scoped `Kingsway delivery` key remains for this app.
+- **Cross-browser admin recovery (2026-07-21):** the live Supabase recovery template now links to
+  `/admin/auth/confirm` with Supabase's one-time token hash instead of relying on a PKCE verifier
+  stored in the browser that requested the email. The public confirm route verifies only `recovery`
+  tokens, rejects unapproved identities, and sends the approved admin to password creation **before**
+  mandatory MFA. The source template is
+  [supabase/templates/admin-recovery.html](./supabase/templates/admin-recovery.html); subject is
+  `Set your Kingsway admin password`. The simple transactional template has no remote images, custom
+  fonts, or tracking links. Domain DKIM/SPF are verified, DMARC is present, and Resend tracking is
+  disabled; Gmail still makes the final Spam/Inbox decision from sender reputation and recipient
+  behavior. The temporary Supabase Management API token used to apply this template was revoked.
 
 - **Visual design system — "Brass & Ink" (frontend-design pass), BUILT & verified in-browser.**
   Distinctive identity for the member-facing surfaces, inspired by Wise/Linear/Notion but its own:
@@ -282,8 +293,9 @@ _Last updated: 2026-07-21_
   Follow-Up, with `.ics`). Since there's no Topic Bank seed or management UI in V1, include a minimal
   inline "add a topic" in the session-creation flow so topics can be created on the fly.
 - Build order step 7 — **Email page** (segmented sends), plus finishing **Analytics** (funnel + charts).
-- After the pushed build deploys, use `/admin/login` → **Set or reset password** once, follow the
-  emailed recovery link, choose the Super Admin password, and complete authenticator enrollment.
+- After the pushed build deploys, use `/admin/login` → **Set or reset password** once, then use only
+  the newest recovery email. It should open password creation first and authenticator enrollment
+  second; previously issued PKCE recovery emails follow the superseded browser-bound flow.
   Also verify one fresh live Census submission in Gmail with the new `hello@` sender and `learn@`
   Reply-To; inbox category cannot be forced by application code.
 
@@ -340,6 +352,11 @@ _Last updated: 2026-07-21_
   `?next=` query). The intended protected destination and recovery-flow marker are stored in
   short-lived HttpOnly cookies and cleared by the callback. A mismatched redirect causes Supabase to
   fall back to the public Site URL.
+- **2026-07-21** — Supabase recovery emails now use `{{ .TokenHash }}` and
+  `/admin/auth/confirm?type=recovery`. This supersedes the browser-bound PKCE recovery callback for
+  newly issued emails, so opening a link in Gmail or another browser still reaches password creation
+  before MFA. Keep `/admin/auth/callback` for normal OAuth/PKCE compatibility and previously issued
+  links.
 
 ## Open questions to confirm before building (carried from PRD §7)
 
