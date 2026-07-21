@@ -232,7 +232,10 @@ _Last updated: 2026-07-21_
   operational: Hanken interface + IBM Plex Mono utility labels, precise left rail, warm neutral
   surfaces, brass only for state/focus; no member-facing serif, crown, Cadence, or celebration.
   Verified: `npx tsc --noEmit`; production `npm run build` (23 routes); anonymous `/admin` → 307
-  `/admin/login`, login → 200, anonymous admin API → 401.
+  `/admin/login`, login → 200, anonymous admin API → 401. **Supabase Auth URL config is live:** Site
+  URL = `https://kingsway-steel.vercel.app`; redirect allow-list includes the production and localhost
+  `/admin/auth/callback` routes. Applied through the Management API after the dashboard save endpoint
+  returned 500; the temporary personal access token was revoked immediately after verification.
 
 - **Visual design system — "Brass & Ink" (frontend-design pass), BUILT & verified in-browser.**
   Distinctive identity for the member-facing surfaces, inspired by Wise/Linear/Notion but its own:
@@ -309,6 +312,9 @@ _Last updated: 2026-07-21_
 - **2026-07-21** — Admin authentication = approved Supabase Auth identity in service-controlled
   `app_metadata` + passwordless email link + mandatory TOTP MFA (AAL2). No public signup. This avoids
   shared/temporary passwords while preserving an extensible role model and immediate server checks.
+- **2026-07-21** — Supabase Auth production URL is `https://kingsway-steel.vercel.app`; allowed
+  redirects are the production and localhost `/admin/auth/callback` routes. Keep these synchronized
+  if the canonical domain changes, otherwise Supabase falls back to its Site URL in auth emails.
 
 ## Open questions to confirm before building (carried from PRD §7)
 
