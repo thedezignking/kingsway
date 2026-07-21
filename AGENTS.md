@@ -258,7 +258,10 @@ _Last updated: 2026-07-21_
   `Set your Kingsway admin password`. The simple transactional template has no remote images, custom
   fonts, or tracking links. Domain DKIM/SPF are verified, DMARC is present, and Resend tracking is
   disabled; Gmail still makes the final Spam/Inbox decision from sender reputation and recipient
-  behavior. The temporary Supabase Management API token used to apply this template was revoked.
+  behavior. Supabase's project-wide auth-email quota was raised from its exhausted default of 2/hour
+  to a restrained 10/hour (custom SMTP is active); the first new-template recovery email was
+  confirmed delivered by Resend. The temporary Supabase Management API token used to apply this
+  template was revoked.
 
 - **Visual design system — "Brass & Ink" (frontend-design pass), BUILT & verified in-browser.**
   Distinctive identity for the member-facing surfaces, inspired by Wise/Linear/Notion but its own:
@@ -293,9 +296,9 @@ _Last updated: 2026-07-21_
   Follow-Up, with `.ics`). Since there's no Topic Bank seed or management UI in V1, include a minimal
   inline "add a topic" in the session-creation flow so topics can be created on the fly.
 - Build order step 7 — **Email page** (segmented sends), plus finishing **Analytics** (funnel + charts).
-- After the pushed build deploys, use `/admin/login` → **Set or reset password** once, then use only
-  the newest recovery email. It should open password creation first and authenticator enrollment
-  second; previously issued PKCE recovery emails follow the superseded browser-bound flow.
+- Use only the newest recovery email with subject **“Set your Kingsway admin password.”** It should
+  open password creation first and authenticator enrollment second; previously issued PKCE recovery
+  emails follow the superseded browser-bound flow.
   Also verify one fresh live Census submission in Gmail with the new `hello@` sender and `learn@`
   Reply-To; inbox category cannot be forced by application code.
 
@@ -357,6 +360,10 @@ _Last updated: 2026-07-21_
   newly issued emails, so opening a link in Gmail or another browser still reaches password creation
   before MFA. Keep `/admin/auth/callback` for normal OAuth/PKCE compatibility and previously issued
   links.
+- **2026-07-21** — Supabase's project-wide auth-email limit is 10/hour. The former 2/hour limit was
+  exhausted by two setup tests and blocked a legitimate recovery request despite healthy Resend SMTP.
+  Keep the limit modest because `/admin/login` is public even though only approved Auth identities can
+  receive a usable recovery session.
 
 ## Open questions to confirm before building (carried from PRD §7)
 
