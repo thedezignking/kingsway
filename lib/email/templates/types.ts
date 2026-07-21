@@ -6,6 +6,8 @@
 export interface RenderedEmail {
   subject: string;
   html: string;
+  /** Plain-text alternative for accessibility and resilient delivery. */
+  text?: string;
   /** Optional .ics attachment (KingsHour invitation). */
   ics?: string;
 }

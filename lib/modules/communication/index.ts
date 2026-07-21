@@ -6,7 +6,16 @@ import { getResend, emailConfigured, EMAIL_FROM } from "@/lib/email/resend";
 import { welcomeEmail } from "@/lib/email/templates";
 import type { CommunicationType } from "@/lib/supabase/types";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+function appUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "");
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+
+  if (process.env.NODE_ENV === "production" && (!configured || configured.includes("localhost"))) {
+    if (vercelHost) return `https://${vercelHost.replace(/^https?:\/\//, "")}`;
+  }
+
+  return configured || "http://localhost:3000";
+}
 
 /** Audience segments for admin sends (PRD §5.5). */
 export type Segment =
@@ -51,19 +60,27 @@ export async function sendWelcome(memberId: string): Promise<void> {
     .single();
   if (!member?.email) return;
 
-  const rendered = welcomeEmail({ firstName: member.first_name, appUrl: APP_URL });
+  const rendered = welcomeEmail({ firstName: member.first_name, appUrl: appUrl() });
 
   let providerId: string | null = null;
   if (emailConfigured()) {
     try {
-      const { data } = await getResend().emails.send({
+      const { data, error } = await getResend().emails.send({
         from: EMAIL_FROM,
         to: member.email,
         subject: rendered.subject,
         html: rendered.html,
+        text: rendered.text,
       });
+      if (error) {
+        console.error("Welcome email rejected by Resend", {
+          name: error.name,
+          message: error.message,
+        });
+      }
       providerId = data?.id ?? null;
-    } catch {
+    } catch (error) {
+      console.error("Welcome email send failed", error);
       // Delivery failed — still record intent so admin can see/retry. providerId stays null.
     }
   }

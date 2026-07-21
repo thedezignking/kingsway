@@ -16,5 +16,6 @@ export function emailConfigured(): boolean {
 }
 
 /** Default From identity (consistent across all templates, PRD §4.4). */
-export const EMAIL_FROM =
-  process.env.KINGSWAY_EMAIL_FROM || "Kingsway <hello@kingsway.example>";
+const configuredFrom = process.env.KINGSWAY_EMAIL_FROM || "hello@kingsway.example";
+const configuredAddress = configuredFrom.match(/<([^>]+)>/)?.[1] || configuredFrom;
+export const EMAIL_FROM = `Divine from Kingsway <${configuredAddress.trim()}>`;
