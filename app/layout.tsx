@@ -22,9 +22,9 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kingsway — a growth community for builders",
+  title: "Kingsway — a community for young builders",
   description:
-    "Once a month, on the last Sunday, builders gather for KingsHour: honest conversation, accountability, and reflection. Become a King.",
+    "Kingsway is a community for young builders. Once a month, we gather for one honest conversation at KingsHour.",
 };
 
 export default function RootLayout({

@@ -135,6 +135,35 @@ Until we begin committing to GitHub, update this file at the end of each working
 _Last updated: 2026-07-21_
 
 **Done**
+- **Kingsway public experience redesign (2026-07-21):** canonical human-facing brand casing remains
+  **Kingsway** across product UI, admin, emails, Supabase templates, metadata and documentation;
+  compatibility-sensitive lowercase technical identifiers remain unchanged. Landing is now a
+  soft-white, sans-led one-read hero with a central brass crown surrounded by five real-King portrait
+  slots, verified city proof, and a dotted path that continues into a reversible three-scene sticky
+  narrative (recognition → KingsHour → King’s Census). Future scenes stay hidden until scroll;
+  the immediately previous scene remains at 25% opacity. FAQ and final invitation are open text,
+  not cards; reduced-motion/no-JS fall back to normal stacked content. Public Census/Welcome inherit
+  the lighter system, Welcome cards became an open path, and Census location now explicitly asks for
+  **current residence** while preserving `{ country, state_city }`, subdivision automation, phone
+  dial-code seeding, persistence and backend contracts. Real assets belong in
+  `public/images/kings/hero/king-01.jpg`…`king-05.jpg` (1:1; 1200px+); neutral crown placeholders
+  render until supplied. Browser QA passed at desktop, tablet, mobile and short-height viewports:
+  first-scene isolation, forward/reverse scene state, 25% previous-scene fade, dotted-path progress,
+  no horizontal overflow, and a single semantic scene set shared by enhanced/reduced-motion/no-JS
+  modes. Changes intentionally remain uncommitted until Divine approves.
+- **Landing refinement (2026-07-21):** retained the new open, scroll-led direction and added the
+  finish the earlier design handled better: more space below the nav, orchestrated hero/portrait/
+  crown/path entrances, staggered scene copy, animated FAQ disclosures and a stronger full-width
+  invitation where the dotted way resolves. Journey and FAQ copy now speak more directly to the
+  quiet reality of building without promising outcomes. At `<=960px`, journey scenes use one stable
+  reading position while the previous scene moves up and reduces to a faded heading; browser bounds
+  checks confirm no overlap and the full King's Census paragraph remains visible at desktop, tablet
+  and mobile. The welcome email keeps its copy and delivery behavior but now uses the same lighter
+  sans-led canvas, compact brass crown and dotted connected block. Reduced-motion remains static.
+- **Public type correction (2026-07-21):** restored the softer sans treatment from the first redesign
+  by loosening hero/journey/FAQ/CTA tracking, reducing public heading weight, and easing the wordmark
+  back from the compressed startup-style treatment. The new open landing structure stays intact; only
+  the over-tight type drift from the latest pass was corrected.
 - **Welcome email revision (2026-07-21):** sender identity is `Divine from Kingsway`; redesigned
   as an email-client-safe Brass & Ink personal letter with first-name subject/personalization,
   porcelain canvas, restrained cadence header, one brass pill CTA, and a plain-text alternative.
@@ -214,6 +243,8 @@ _Last updated: 2026-07-21_
   France 18 regions; UAE 7 emirates; unlisted country falls back to text).
   NOTE: run `npm run dev` and `npm run build` against separate `.next` state — a production build
   reused by the dev server causes spurious whole-document hydration warnings (wipe `.next` if seen).
+  Production page collection is pinned to one worker in `next.config.mjs` because Next 14 can
+  intermittently lose generated route modules under parallel collection on Windows.
 
 - **Welcome email identity + brand line (2026-07-21):** sender is now consistently
   `Divine from Kingsway <hello@thedezignking.com>` with replies routed to
@@ -324,6 +355,21 @@ _Last updated: 2026-07-21_
 - GitHub is connected at `thedezignking/kingsway`; this folder is an isolated repository on `main`.
 
 ## Decision log
+
+- **2026-07-21** — After an editorial review, **Kingsway** remains the canonical display name; the
+  brief camel-case experiment was rejected as too stylized. Preserve lowercase technical identifiers
+  (domain/repo/package/env/cookies/storage/
+  Supabase metadata/calendar UID domains) to avoid compatibility breaks. Public design direction is
+  soft white (`#FCFCFA`), sans-led, no cards/glow/dark CTA, with a crown-centred real-portrait hero
+  and native scroll-driven dotted journey. Census `location` means where the King currently lives,
+  not origin; storage and schema remain unchanged.
+- **2026-07-21** — Keep the new open public direction over the former card-led design. Recover polish
+  through stronger copy, spacing and purposeful motion—not by restoring cards, glow or a dark CTA.
+  Desktop retains alternating journey scenes; tablet/mobile show the previous heading above one
+  complete active scene so copy never overlaps or clips.
+- **2026-07-21** — Public display typography should stay sans-led but soft: Hanken headings use
+  moderate weight and light negative tracking only. Do not reintroduce the over-compressed
+  `tracking-[-0.04em]` / heavy startup-style treatment unless Divine explicitly asks.
 
 - **2026-07-20** — Scaffold depth = "what PRD §7 lays out" (skeleton + fully-built step 1), not feature
   logic. Git left untouched. Backend wired with env-var placeholders, no live keys.

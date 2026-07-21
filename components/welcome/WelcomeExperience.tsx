@@ -1,6 +1,4 @@
-// Welcome Experience (PRD §4.3). The first moment of belonging — not a confirmation page.
-// Communicates the five things a new King must leave knowing, plus add-to-calendar for the next
-// KingsHour. First-pass copy in Kingsway's voice.
+// Welcome Experience: the first moment of belonging, not a confirmation page.
 "use client";
 
 import { useEffect, useState } from "react";
@@ -43,9 +41,9 @@ export function WelcomeExperience() {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       <header className="flex flex-col gap-3">
-        <div className="anim-crown flex h-16 w-16 items-center justify-center rounded-full bg-brass-soft/50 text-brass ring-1 ring-brass/30">
+        <div className="anim-crown flex h-16 w-16 items-center justify-center rounded-full bg-brass text-white">
           <Crown size={32} />
         </div>
         <h1 className="text-balance font-display text-4xl leading-tight">
@@ -56,49 +54,52 @@ export function WelcomeExperience() {
         </p>
       </header>
 
-      <Item title="KingsHour is the heart of it">
-        Once a month, on the last Sunday, we gather online. Your next one is{" "}
-        <strong className="font-semibold text-fg">{nextDate}</strong>.
-        <button
-          type="button"
-          onClick={addToCalendar}
-          className="mt-4 inline-flex rounded-full bg-brass px-5 py-2 text-sm font-medium text-white transition duration-200 hover:-translate-y-px hover:brightness-105 active:translate-y-0"
-        >
-          Add to calendar
-        </button>
-      </Item>
+      <div className="welcome-way">
+        <Item title="KingsHour is the heart of it">
+          Once a month, on the last Sunday, we gather online. Your next one is{" "}
+          <strong className="font-semibold text-fg">{nextDate}</strong>.
+          <div className="mt-4">
+            <button type="button" onClick={addToCalendar} className="primary-pill">
+              Add to calendar
+            </button>
+          </div>
+        </Item>
 
-      <Item title="Email is your home base">
-        Everything important lives in your inbox — the topic, the join link, and a follow-up after
-        each session. We send few emails, and each one has a point.
-      </Item>
+        <Item title="Email is your home base">
+          Everything important lives in your inbox — the topic, the join link, and a follow-up after
+          each session. We send few emails, and each one has a point.
+        </Item>
 
-      <Item title="WhatsApp Status, not a group">
-        No noisy group chat. Instead, connect with the founder and watch their WhatsApp Status for
-        lightweight reminders and building updates.
-        <a
-          href={whatsappLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-block rounded-full border border-line px-5 py-2 text-sm font-medium transition duration-200 hover:-translate-y-px hover:border-brass/50 hover:bg-brass-soft/30"
-        >
-          Connect on WhatsApp
-        </a>
-        <span className="mt-2 block font-mono text-xs text-muted">{whatsappDisplay()}</span>
-      </Item>
+        <Item title="WhatsApp Status, not a group">
+          No noisy group chat. Instead, connect with the founder and watch their WhatsApp Status for
+          lightweight reminders and building updates.
+          <div className="mt-4">
+            <a
+              href={whatsappLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center rounded-full border border-line px-5 py-2 text-sm font-medium transition duration-200 hover:-translate-y-px hover:border-brass/50 hover:bg-brass-soft/30"
+            >
+              Connect on WhatsApp
+            </a>
+          </div>
+          <span className="mt-2 block font-mono text-xs text-muted">{whatsappDisplay()}</span>
+        </Item>
 
-      <Item title="What to expect next">
-        A welcome email is on its way. Before your first KingsHour, we&apos;ll send the topic and the
-        link. Between gatherings, keep building — that&apos;s the whole point.
-      </Item>
+        <Item title="What to expect next">
+          A welcome email is on its way. Before your first KingsHour, we&apos;ll send the topic and the
+          link. Between gatherings, keep building — that&apos;s the whole point.
+        </Item>
+      </div>
     </div>
   );
 }
 
 function Item({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-xl border border-line bg-surface-2/40 p-5">
-      <h2 className="font-display text-lg">{title}</h2>
+    <section className="welcome-way__item">
+      <span className="welcome-way__node" aria-hidden="true" />
+      <h2 className="font-sans text-lg font-semibold tracking-tight">{title}</h2>
       <div className="mt-2 text-sm leading-relaxed text-muted">{children}</div>
     </section>
   );

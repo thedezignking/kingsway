@@ -46,15 +46,15 @@ export function LocationSelect({
 
       {v.country && (
         <div className="flex flex-col gap-1">
-          <label className="text-sm capitalize text-gray-500">Your {label}</label>
+          <label className="text-sm capitalize text-muted">Your current {label}</label>
           {hasList ? (
             <select
               ref={selectRef}
               value={v.state_city ?? ""}
               onChange={(e) => onChange({ ...v, state_city: e.target.value })}
-              className="w-full rounded-md border border-gray-300 bg-transparent px-4 py-3 text-base outline-none focus:border-black dark:border-gray-700 dark:focus:border-white"
+              className="w-full rounded-xl border border-line bg-surface px-4 py-3 text-base outline-none transition focus:border-brass"
             >
-              <option value="">Select your {label}…</option>
+              <option value="">Select your current {label}…</option>
               {states.map((s) => (
                 <option key={s} value={s}>
                   {s}
@@ -66,9 +66,9 @@ export function LocationSelect({
               ref={stateRef}
               type="text"
               value={v.state_city ?? ""}
-              placeholder="e.g. Lagos"
+              placeholder={`Add your current ${label}…`}
               onChange={(e) => onChange({ ...v, state_city: e.target.value })}
-              className="w-full rounded-md border border-gray-300 bg-transparent px-4 py-3 text-base outline-none focus:border-black dark:border-gray-700 dark:focus:border-white"
+              className="w-full rounded-xl border border-line bg-surface px-4 py-3 text-base outline-none transition focus:border-brass"
             />
           )}
         </div>

@@ -57,7 +57,7 @@ export function questionPrompt(id: string): string {
     email: "What's the best email to reach you?",
     phone: "What's your WhatsApp number?",
     age_range: "How old are you?",
-    location: "Where are you based?",
+    location: "Where do you currently live?",
     birthday: "When's your birthday?",
     season: "Where are you in life right now?",
     occupation: "What do you actually do day to day?",
@@ -96,6 +96,7 @@ export function questionHelper(id: string): string | null {
     obstacles: "Pick up to 3.",
     topics: "Pick up to 5.",
     phone: "For KingsHour reminders only.",
+    location: "Choose where you live now, not where you’re originally from.",
   };
   return helpers[id] ?? null;
 }

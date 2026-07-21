@@ -82,8 +82,8 @@ export function validate(question: CensusQuestion, value: unknown): string | nul
   // Composite location: give specific guidance for each missing part.
   if (question.input === "location") {
     const o = (value as { country?: string; state_city?: string } | null) ?? {};
-    if (!o.country) return "Pick your country to continue.";
-    if (!o.state_city?.trim()) return "Add your state or city.";
+    if (!o.country) return "Choose the country where you currently live.";
+    if (!o.state_city?.trim()) return "Add your current state or city.";
     return null;
   }
   if (!isAnswered(question, value)) {

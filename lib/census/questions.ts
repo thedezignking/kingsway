@@ -43,7 +43,7 @@ export const CENSUS_QUESTIONS: CensusQuestion[] = [
       { value: "35_plus", label: "35+" },
     ],
   },
-  { id: "location", chapter: 1, input: "location", asksFor: "Country + state/city", required: true, autoAdvance: false, note: "searchable country select; state/city field appears under it on the SAME screen once a country is picked. Country also seeds the phone dial code. Stored as { country, state_city }." },
+  { id: "location", chapter: 1, input: "location", asksFor: "Current country + state/city", required: true, autoAdvance: false, note: "current residence, not place of origin; searchable country select; state/city field appears under it on the SAME screen once a country is picked. Country also seeds the editable phone dial code. Stored as { country, state_city }." },
   { id: "phone", chapter: 1, input: "tel", asksFor: "WhatsApp number", required: true, autoAdvance: false, note: "dial code seeded from location.country, editable; store E.164" },
   { id: "birthday", chapter: 1, input: "calendar", asksFor: "Birthday (optional)", required: false, autoAdvance: false, deferred: true, note: "DEFERRED FEATURE — month+day only, never full DOB. Do not wire automation to it." },
 

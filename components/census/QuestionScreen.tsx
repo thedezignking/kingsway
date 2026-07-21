@@ -47,7 +47,7 @@ export function QuestionScreen({
     <div className="flex flex-col gap-6">
       <p className="eyebrow">{chapterLabel}</p>
       <div className="flex flex-col gap-2">
-        <h2 className="font-display text-2xl leading-snug sm:text-[1.7rem]">
+        <h2 className="font-sans text-2xl font-semibold leading-snug tracking-tight sm:text-[1.7rem]">
           {questionPrompt(question.id)}
         </h2>
         {helper && <p className="text-sm text-muted">{helper}</p>}

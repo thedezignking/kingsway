@@ -31,16 +31,16 @@ export function CountrySelect({
         ref={ref}
         type="text"
         value={query}
-        placeholder="Start typing your country…"
+        placeholder="Start typing the country you live in…"
         onChange={(e) => {
           setQuery(e.target.value);
           setOpen(true);
         }}
         onFocus={() => setOpen(true)}
-        className="w-full rounded-md border border-gray-300 bg-transparent px-4 py-3 text-base outline-none focus:border-black dark:border-gray-700 dark:focus:border-white"
+        className="w-full rounded-xl border border-line bg-surface px-4 py-3 text-base outline-none transition focus:border-brass"
       />
       {open && results.length > 0 && (
-        <ul className="absolute z-10 mt-1 max-h-64 w-full overflow-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-black">
+        <ul className="absolute z-10 mt-1 max-h-64 w-full overflow-auto rounded-xl border border-line bg-surface py-1 shadow-soft">
           {results.map((c) => (
             <li key={c.iso2}>
               <button
@@ -51,10 +51,10 @@ export function CountrySelect({
                   setOpen(false);
                   setTimeout(onPick, 160);
                 }}
-                className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
+                className="flex min-h-11 w-full items-center justify-between px-4 py-2.5 text-left text-sm transition hover:bg-surface-2"
               >
                 <span>{c.name}</span>
-                <span className="text-xs text-gray-400">+{c.dial}</span>
+                <span className="text-xs text-muted">+{c.dial}</span>
               </button>
             </li>
           ))}

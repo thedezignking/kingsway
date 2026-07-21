@@ -17,7 +17,7 @@ export function Footer() {
         <div className="flex max-w-xs flex-col gap-3">
           <Wordmark />
           <p className="text-sm leading-relaxed text-muted">
-            A growth community for builders. Last Sunday, every month.
+            A community for young builders. One honest conversation, once a month.
           </p>
         </div>
 

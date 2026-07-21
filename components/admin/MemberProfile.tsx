@@ -12,8 +12,8 @@ export function MemberProfile({ profile }: { profile: Profile }) {
         <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3">
           <Field label="Email" value={member.email} />
           <Field label="Phone" value={member.phone} />
-          <Field label="Country" value={member.country} />
-          <Field label="State/City" value={member.state_city} />
+          <Field label="Current country" value={member.country} />
+          <Field label="Current state/city" value={member.state_city} />
           <Field label="Age" value={member.age_range} />
           <Field label="Status" value={member.status} />
           <Field label="Joined" value={new Date(member.join_date).toLocaleDateString()} />
