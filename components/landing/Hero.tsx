@@ -20,7 +20,7 @@ export function Hero() {
       >
         Kingsway is a community for young builders.
       </p>
-      <div className="anim-fade-up" style={{ animationDelay: "235ms" }}>
+      <div className="hero-cta anim-fade-up" style={{ animationDelay: "235ms" }}>
         <BecomeKingLink placement="hero" className="primary-pill" />
       </div>
       <div className="anim-fade-up w-full" style={{ animationDelay: "300ms" }}>

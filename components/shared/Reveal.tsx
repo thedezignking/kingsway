@@ -8,10 +8,14 @@ export function Reveal({
   children,
   delay = 0,
   className = "",
+  rootMargin = "0px 0px -8% 0px",
+  threshold = 0.12,
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  rootMargin?: string;
+  threshold?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -28,11 +32,11 @@ export function Reveal({
           }
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      { threshold, rootMargin },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [rootMargin, threshold]);
 
   return (
     <div

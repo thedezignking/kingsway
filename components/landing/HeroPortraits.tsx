@@ -4,8 +4,15 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { Crown } from "@/components/shared/Crown";
 
-const PORTRAITS = Array.from({ length: 5 }, (_, index) => {
-  const filename = `king-0${index + 1}.jpg`;
+const PORTRAIT_FILES = [
+  "dp.png",
+  "photo_2026-07-21_20-41-34.jpg",
+  "king-03.jpg",
+  "king-04.jpg",
+  "king-05.jpg",
+] as const;
+
+const PORTRAITS = PORTRAIT_FILES.map((filename) => {
   return {
     filename,
     src: `/images/kings/hero/${filename}`,

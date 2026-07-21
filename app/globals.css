@@ -134,8 +134,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: clamp(0.85rem, 1.7svh, 1.25rem);
-  padding: clamp(2.2rem, 4.5svh, 3.5rem) 0 0;
+  gap: clamp(1rem, 2svh, 1.35rem);
+  padding: clamp(2.75rem, 5.25svh, 4.35rem) 0 0;
   text-align: center;
 }
 
@@ -153,6 +153,10 @@ body {
   margin-top: clamp(0.1rem, 0.9svh, 0.65rem);
 }
 
+.hero-cta {
+  margin-top: clamp(0.15rem, 0.9svh, 0.45rem);
+}
+
 .hero-community__cluster {
   position: relative;
   width: min(100%, 46rem);
@@ -162,6 +166,7 @@ body {
 
 .hero-community__portrait {
   position: absolute;
+  z-index: 1;
   overflow: hidden;
   aspect-ratio: 1;
   border-radius: 1.15rem;
@@ -236,6 +241,10 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.55rem;
+}
+
+.hero-community__centre > span:last-child {
+  max-width: 12rem;
 }
 
 .hero-community__crown {
@@ -522,81 +531,44 @@ body {
   animation: faq-answer-in 340ms var(--ease-out-expo) both;
 }
 
-/* FAQ and the final invitation resolve as two post-journey layers. */
+/* FAQ and final invitation enter naturally once their part of the page is in view. */
 .post-layers {
   position: relative;
-  min-height: 230svh;
-  margin-top: -1px;
-}
-
-.post-layers__stage {
-  position: sticky;
-  top: 0;
-  display: grid;
-  min-height: 100svh;
-  place-items: center;
-  overflow: hidden;
-  padding: clamp(4rem, 8svh, 6rem) 0;
-}
-
-.post-layers__way {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  z-index: 0;
-  width: 2px;
-  transform: translateX(-50%);
-  color: color-mix(in srgb, var(--accent) 55%, var(--line));
-  background-image: radial-gradient(circle, currentColor 1px, transparent 1.35px);
-  background-position: center top;
-  background-size: 2px 10px;
-  background-repeat: repeat-y;
-  opacity: 0.35;
-  pointer-events: none;
+  display: flex;
+  margin-top: clamp(4rem, 10svh, 7rem);
+  flex-direction: column;
+  gap: clamp(4rem, 9svh, 6.5rem);
 }
 
 .post-layer {
-  position: relative;
-  z-index: 1;
-  grid-area: 1 / 1;
   width: 100%;
+  min-width: 0;
+}
+
+.post-reveal {
   opacity: 0;
-  pointer-events: none;
-  transform: translateY(2rem) scale(0.985);
-  visibility: hidden;
+  transform: translateY(2.75rem);
   transition:
-    opacity 360ms var(--ease-out-quart),
-    transform 520ms var(--ease-out-expo),
-    visibility 0ms linear 520ms;
+    opacity 900ms var(--ease-out-expo),
+    transform 900ms var(--ease-out-expo);
+  will-change: opacity, transform;
 }
 
-.post-layer[data-state="active"] {
+.post-reveal-in {
   opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-  visibility: visible;
-  transition-delay: 0ms;
+  transform: translateY(0);
 }
 
-.post-layer[data-state="previous"] {
-  opacity: 0;
-  transform: translateY(-1.35rem) scale(0.985);
+.post-layer--cta.post-reveal {
+  transform: translateY(3.25rem);
 }
 
-.post-layer[data-state="hidden"] {
-  opacity: 0;
-  transform: translateY(2rem) scale(0.985);
-}
-
-.post-layers[data-ready="false"] .post-layers__way,
-.post-layers[data-ready="false"] .post-layer {
-  opacity: 0;
-  visibility: hidden;
+.post-layer--cta.post-reveal-in {
+  transform: translateY(0);
 }
 
 .faq-section {
-  padding: 0 clamp(0rem, 3vw, 1rem);
+  padding: clamp(4rem, 8vw, 6rem) clamp(0rem, 3vw, 1rem) 0;
 }
 
 /* The dotted way resolves into one open invitation rather than another card. */
@@ -1057,8 +1029,8 @@ body {
   }
 
   .hero-community__centre > span:last-child {
-    max-width: 8.75rem;
-    font-size: 0.78rem;
+    max-width: 10.75rem;
+    font-size: 0.84rem;
   }
 }
 
