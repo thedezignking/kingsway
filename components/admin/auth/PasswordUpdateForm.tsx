@@ -1,52 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useFormState, useFormStatus } from "react-dom";
+import {
+  updateAdminPassword,
+  type PasswordUpdateState,
+} from "@/app/admin/actions";
 
-const MIN_PASSWORD_LENGTH = 14;
+const initialState: PasswordUpdateState = { error: null };
 
 export function PasswordUpdateForm({ destination }: { destination: string }) {
-  const router = useRouter();
-  const [password, setPassword] = useState("");
-  const [confirmation, setConfirmation] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-
-  async function updatePassword(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setError(`Use at least ${MIN_PASSWORD_LENGTH} characters.`);
-      return;
-    }
-    if (password !== confirmation) {
-      setError("The passwords do not match.");
-      return;
-    }
-
-    setBusy(true);
-    setError(null);
-    const { error: updateError } = await createClient().auth.updateUser({ password });
-    if (updateError) {
-      setBusy(false);
-      setError("We could not save that password. Try a different one.");
-      return;
-    }
-
-    router.replace(`/admin/mfa/enroll?next=${encodeURIComponent(destination)}`);
-    router.refresh();
-  }
+  const [state, action] = useFormState(updateAdminPassword, initialState);
 
   return (
-    <form onSubmit={updatePassword} className="space-y-5">
+    <form action={action} className="space-y-5">
+      <input type="hidden" name="next" value={destination} />
       <label className="block">
         <span className="mb-2 block text-xs font-semibold">New password</span>
         <input
           type="password"
+          name="password"
           autoComplete="new-password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          minLength={MIN_PASSWORD_LENGTH}
+          minLength={14}
           required
           autoFocus
           className="w-full rounded-md border border-line bg-[#fbfaf7] px-3.5 py-3 text-sm outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
@@ -57,22 +31,30 @@ export function PasswordUpdateForm({ destination }: { destination: string }) {
         <span className="mb-2 block text-xs font-semibold">Confirm password</span>
         <input
           type="password"
+          name="confirmation"
           autoComplete="new-password"
-          value={confirmation}
-          onChange={(event) => setConfirmation(event.target.value)}
-          minLength={MIN_PASSWORD_LENGTH}
+          minLength={14}
           required
           className="w-full rounded-md border border-line bg-[#fbfaf7] px-3.5 py-3 text-sm outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
         />
       </label>
-      <p className="min-h-5 text-sm text-red-700" role="status" aria-live="polite">{error}</p>
-      <button
-        type="submit"
-        disabled={busy}
-        className="w-full rounded-full bg-fg px-5 py-3 text-sm font-semibold text-bone transition-colors hover:bg-fg/90 disabled:cursor-wait disabled:opacity-60"
-      >
-        {busy ? "Saving password…" : "Save password and continue"}
-      </button>
+      <p className="min-h-5 text-sm text-red-700" role="status" aria-live="polite">
+        {state.error}
+      </p>
+      <SavePasswordButton />
     </form>
+  );
+}
+
+function SavePasswordButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full rounded-full bg-fg px-5 py-3 text-sm font-semibold text-bone transition-colors hover:bg-fg/90 disabled:cursor-wait disabled:opacity-60"
+    >
+      {pending ? "Saving password…" : "Save password and continue"}
+    </button>
   );
 }

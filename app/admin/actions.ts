@@ -13,6 +13,9 @@ import {
 
 export type LoginState = { error: string | null };
 export type PasswordResetState = { error: string | null; sent: boolean };
+export type PasswordUpdateState = { error: string | null };
+
+const MIN_ADMIN_PASSWORD_LENGTH = 14;
 
 export async function signIn(
   _previous: LoginState,
@@ -86,6 +89,38 @@ export async function requestPasswordReset(
 
   // Generic by design: do not reveal which email addresses are approved administrators.
   return { error: null, sent: true };
+}
+
+export async function updateAdminPassword(
+  _previous: PasswordUpdateState,
+  formData: FormData,
+): Promise<PasswordUpdateState> {
+  const password = String(formData.get("password") ?? "");
+  const confirmation = String(formData.get("confirmation") ?? "");
+  const destination = safeAdminDestination(String(formData.get("next") ?? ""));
+
+  if (password.length < MIN_ADMIN_PASSWORD_LENGTH) {
+    return { error: `Use at least ${MIN_ADMIN_PASSWORD_LENGTH} characters.` };
+  }
+  if (password !== confirmation) {
+    return { error: "The passwords do not match." };
+  }
+
+  const admin = await getCurrentAdmin();
+  if (!admin) {
+    return { error: "Your secure setup session has expired. Request a new link." };
+  }
+
+  const { error } = await createServerSupabase().auth.updateUser({ password });
+  if (error) {
+    console.error("Admin password update failed", {
+      name: error.name,
+      message: error.message,
+    });
+    return { error: "We could not save that password. Try a different one." };
+  }
+
+  redirect(`/admin/mfa/enroll?next=${encodeURIComponent(destination)}`);
 }
 
 export async function signOut(): Promise<void> {

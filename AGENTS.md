@@ -262,6 +262,11 @@ _Last updated: 2026-07-21_
   to a restrained 10/hour (custom SMTP is active); the first new-template recovery email was
   confirmed delivered by Resend. The temporary Supabase Management API token used to apply this
   template was revoked.
+- **Reliable password completion (2026-07-21):** password creation now submits through the protected
+  `updateAdminPassword` server action instead of calling Supabase Auth from a freshly recovered
+  browser client. The former client call could stall before reaching `/auth/v1/user`; the server
+  action validates the approved admin session and both password fields, saves through the
+  cookie-aware server client, reports a definite error, and redirects to MFA only after success.
 
 - **Visual design system — "Brass & Ink" (frontend-design pass), BUILT & verified in-browser.**
   Distinctive identity for the member-facing surfaces, inspired by Wise/Linear/Notion but its own:
@@ -364,6 +369,10 @@ _Last updated: 2026-07-21_
   exhausted by two setup tests and blocked a legitimate recovery request despite healthy Resend SMTP.
   Keep the limit modest because `/admin/login` is public even though only approved Auth identities can
   receive a usable recovery session.
+- **2026-07-21** — Admin password creation is a server action, not a direct browser Supabase call.
+  Recovery establishes the secure cookie session; the server action revalidates the approved admin,
+  updates the password, then redirects to MFA. This avoids browser auth-lock stalls during first-time
+  setup.
 
 ## Open questions to confirm before building (carried from PRD §7)
 
