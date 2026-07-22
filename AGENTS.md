@@ -135,6 +135,10 @@ Until we begin committing to GitHub, update this file at the end of each working
 _Last updated: 2026-07-22_
 
 **Done**
+- **Post-Census arrival correction (2026-07-22):** the completed Census celebration now renders
+  outside `ChapterShell`, removing the `Chapter 6 / 6`, percentage and progress track after the King
+  has already finished. Progress remains visible throughout the active Census; the final state now
+  reads as arrival rather than another onboarding step.
 - **Final handoff + duplicate-registration wording (2026-07-22):** tightened only the narrow-screen
   sticky stage and FAQ handoff by another small but visible amount without changing scroll duration;
   desktop spacing remains unchanged.

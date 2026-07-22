@@ -230,11 +230,17 @@ export function CensusEngine() {
 
   if (!hydrated) return null; // avoid a hydration flash before we know resume state
 
+  const content = renderScreen(screen);
+
   return (
     <div className="flex min-h-[70vh] w-full items-start justify-center">
-      <ChapterShell chapter={chapter} totalChapters={TOTAL_CHAPTERS} percent={percent}>
-        {renderScreen(screen)}
-      </ChapterShell>
+      {screen?.kind === "celebration" ? (
+        <div className="w-full max-w-xl anim-fade-up">{content}</div>
+      ) : (
+        <ChapterShell chapter={chapter} totalChapters={TOTAL_CHAPTERS} percent={percent}>
+          {content}
+        </ChapterShell>
+      )}
       {ack && <AcknowledgmentToast message={ack} />}
     </div>
   );
