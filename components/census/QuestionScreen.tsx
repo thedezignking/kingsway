@@ -26,7 +26,6 @@ interface Props {
   onAutoAdvance: () => void;
   onNext: () => void;
   onBack: () => void;
-  onReturnToEmail?: () => void;
   canGoBack: boolean;
   isLast: boolean;
 }
@@ -43,7 +42,6 @@ export function QuestionScreen({
   onAutoAdvance,
   onNext,
   onBack,
-  onReturnToEmail,
   canGoBack,
   isLast,
 }: Props) {
@@ -63,14 +61,7 @@ export function QuestionScreen({
             again.
           </p>
         </div>
-        <div className="flex items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={onReturnToEmail}
-            className="min-h-11 px-2 py-2 text-sm font-medium text-muted transition duration-150 hover:text-fg focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
-          >
-            Back
-          </button>
+        <div>
           <Link href="/welcome" className="primary-pill">
             See what happens next
           </Link>

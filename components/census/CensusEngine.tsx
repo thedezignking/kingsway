@@ -206,14 +206,6 @@ export function CensusEngine() {
     advance(nextAnswers);
   }, [screen, firstName, advance, index, sequence, chapter]);
 
-  const returnToEmail = useCallback(() => {
-    const next = { ...answersRef.current, email: "" };
-    answersRef.current = next;
-    setAnswers(next);
-    setExistingKing(false);
-    setError(null);
-  }, []);
-
   const goBack = useCallback(() => {
     setError(null);
     setIndex((i) => Math.max(i - 1, 0));
@@ -273,7 +265,6 @@ export function CensusEngine() {
             onAutoAdvance={goNextFromQuestion}
             onNext={goNextFromQuestion}
             onBack={goBack}
-            onReturnToEmail={returnToEmail}
             canGoBack={index > 0}
             isLast={index >= sequence.length - 2}
           />

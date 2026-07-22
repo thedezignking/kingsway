@@ -137,9 +137,8 @@ _Last updated: 2026-07-22_
 - **Final handoff + duplicate-registration wording (2026-07-22):** tightened only the narrow-screen
   sticky stage and FAQ handoff by another small but visible amount without changing scroll duration;
   desktop spacing remains unchanged.
-  The completed-King state now has one primary decision—**“See what happens next”**—plus a quiet
-  **Back** control returning to the email question. It no longer presents another email as an
-  alternative registration path.
+  The completed-King state now has one action only—**“See what happens next.”** It no longer presents
+  another email or a Back route as an alternative registration path.
 - **Narrow-screen journey boundary correction (2026-07-22):** retained the intended tablet/mobile
   scroll pacing but shortened the physical sticky stage to a content-led `32rem–34rem`. This removes
   the near-full-viewport dotted tail after the final Census copy and lets the normal FAQ section
@@ -340,8 +339,7 @@ _Last updated: 2026-07-22_
 ## Decision log
 
 - **2026-07-22** — Do not frame the completed-King escape route as “Use another email”; that can
-  suggest duplicate registration. Present one primary route to Welcome and a conventional quiet Back
-  control that returns to the email question for genuine mistakes.
+  suggest duplicate registration. The completed-King state presents one route only: Welcome.
 - **2026-07-22** — On tablet/mobile, preserve the scrollytelling cadence but size the sticky stage to
   its content instead of the full viewport. This keeps the focused one-scene interaction while ending
   the dotted path close to the final copy and avoiding a large empty tail before FAQ.
