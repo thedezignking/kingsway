@@ -19,21 +19,31 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL || "https://kingsway.thedezignking.com",
   ),
-  title: "Kingsway — a community for young builders",
+  title: "Kingsway — A community for young builders",
   description:
-    "Kingsway is a community for young builders. Once a month, we gather for one honest conversation at KingsHour.",
+    "We gather once a month at KingsHour for honest conversation about the work and the person building it.",
   openGraph: {
     type: "website",
     siteName: "Kingsway",
-    title: "Whatever you’re building, you don’t have to do it alone.",
-    description: "Kingsway is a community for young builders.",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Kingsway" }],
+    url: "/",
+    title: "Kingsway — A community for young builders",
+    description:
+      "We gather once a month at KingsHour for honest conversation about the work and the person building it.",
+    images: [
+      {
+        url: "/images/social/kingsway-open-graph.png",
+        width: 1200,
+        height: 630,
+        alt: "Kingsway — A community for young builders",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Whatever you’re building, you don’t have to do it alone.",
-    description: "Kingsway is a community for young builders.",
-    images: ["/opengraph-image"],
+    title: "Kingsway — A community for young builders",
+    description:
+      "We gather once a month at KingsHour for honest conversation about the work and the person building it.",
+    images: ["/images/social/kingsway-open-graph.png"],
   },
 };
 

@@ -375,6 +375,19 @@ _Last updated: 2026-07-22_
   reduced-motion + `<noscript>` fallbacks so content is never stuck hidden) + hover lifts on
   buttons/cards/chips. Verified in-browser.
 
+- **Hero portrait completion (2026-07-22):** the hero now uses five founder-supplied portraits; the
+  two weak stock placeholders were removed. The two newest women portraits were cropped to 1:1 with
+  close studio framing so their faces stay readable at the small hero size. Final placement keeps
+  the purple portrait top-right, the warm portrait bottom-centre, and the two women lower-left and
+  lower-right. `public/images/kings/hero/README.md` records the asset status and consent reminder.
+  Verified at the 390px mobile breakpoint with all five optimized images loaded and no overflow.
+- **Reliable social preview (2026-07-22):** replaced the runtime-generated Open Graph endpoint after
+  production returned a zero-byte PNG despite a 200 response. Landing metadata now leads with
+  `Kingsway — A community for young builders`, uses a separate explanatory description instead of
+  repeating the hero headline, and points Open Graph/Twitter cards to the static tested 1200x630
+  `public/images/social/kingsway-open-graph.png` asset. Static response, emitted tags, lint and the
+  production build were verified locally.
+
 **In progress**
 - (nothing active)
 
@@ -402,6 +415,12 @@ _Last updated: 2026-07-22_
 
 ## Decision log
 
+- **2026-07-22** — Stock people may be used only as clearly documented temporary hero placeholders.
+  They must never be represented as actual Kings and should be replaced with consented community
+  portraits as soon as suitable images are available.
+- **2026-07-22** — Social previews must identify the product first (`Kingsway` + what it is), not
+  reuse the landing hero headline. Use a static PNG for crawler reliability; the former edge-rendered
+  Open Graph route returned an empty image body in production.
 - **2026-07-22** — Do not frame the completed-King escape route as “Use another email”; that can
   suggest duplicate registration. The completed-King state presents one route only: Welcome.
 - **2026-07-22** — On tablet/mobile, preserve the scrollytelling cadence but size the sticky stage to
