@@ -206,7 +206,7 @@ export function CensusEngine() {
     advance(nextAnswers);
   }, [screen, firstName, advance, index, sequence, chapter]);
 
-  const useAnotherEmail = useCallback(() => {
+  const returnToEmail = useCallback(() => {
     const next = { ...answersRef.current, email: "" };
     answersRef.current = next;
     setAnswers(next);
@@ -273,7 +273,7 @@ export function CensusEngine() {
             onAutoAdvance={goNextFromQuestion}
             onNext={goNextFromQuestion}
             onBack={goBack}
-            onUseAnotherEmail={useAnotherEmail}
+            onReturnToEmail={returnToEmail}
             canGoBack={index > 0}
             isLast={index >= sequence.length - 2}
           />

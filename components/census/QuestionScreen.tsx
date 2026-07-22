@@ -26,7 +26,7 @@ interface Props {
   onAutoAdvance: () => void;
   onNext: () => void;
   onBack: () => void;
-  onUseAnotherEmail?: () => void;
+  onReturnToEmail?: () => void;
   canGoBack: boolean;
   isLast: boolean;
 }
@@ -43,7 +43,7 @@ export function QuestionScreen({
   onAutoAdvance,
   onNext,
   onBack,
-  onUseAnotherEmail,
+  onReturnToEmail,
   canGoBack,
   isLast,
 }: Props) {
@@ -63,17 +63,17 @@ export function QuestionScreen({
             again.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={onReturnToEmail}
+            className="min-h-11 px-2 py-2 text-sm font-medium text-muted transition duration-150 hover:text-fg focus-visible:rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass"
+          >
+            Back
+          </button>
           <Link href="/welcome" className="primary-pill">
             See what happens next
           </Link>
-          <button
-            type="button"
-            onClick={onUseAnotherEmail}
-            className="min-h-11 rounded-full border border-line px-5 py-2 text-sm font-medium transition hover:border-brass/50 hover:bg-brass-soft/30"
-          >
-            Use another email
-          </button>
         </div>
       </div>
     );

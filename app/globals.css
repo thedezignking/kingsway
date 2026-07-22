@@ -889,7 +889,7 @@ body {
   }
 
   .journey-stage {
-    height: clamp(32rem, 68svh, 34rem);
+    height: clamp(32rem, 66svh, 32.5rem);
   }
 
   .journey-line,
@@ -1079,7 +1079,7 @@ body {
   }
 
   .post-layers {
-    margin-top: clamp(1rem, 2.5svh, 1.75rem);
+    margin-top: clamp(0.75rem, 1.8svh, 1.25rem);
     gap: clamp(3rem, 6svh, 4.5rem);
   }
 
