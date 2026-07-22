@@ -33,7 +33,7 @@ export function CelebrationScreen({ firstName }: { firstName?: string }) {
 
   return (
     <div className="flex flex-col items-center gap-6 py-8 text-center">
-      <div className="anim-crown flex h-20 w-20 items-center justify-center rounded-full bg-brass-soft/50 text-brass ring-1 ring-brass/30">
+      <div className="anim-crown flex h-20 w-20 items-center justify-center rounded-full bg-fg text-surface">
         <Crown size={40} />
       </div>
       <h2 className="text-balance font-display text-3xl leading-tight sm:text-4xl">

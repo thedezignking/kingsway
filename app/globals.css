@@ -6,15 +6,15 @@
    Semantic colors flip between light (warm porcelain) and dark (royal ink).
    One jewel accent: brass. */
 :root {
-  --surface: #fbf9f4; /*   warm porcelain */
-  --surface-2: #f2ece0; /* deeper warm (cards, alt sections) */
+  --surface: #fcfcfa; /*   near-white canvas */
+  --surface-2: #f6f5f1; /* quiet secondary surface */
   --fg: #17152e; /*        deep royal indigo-ink text */
-  --muted: #6b667e; /*     violet-gray secondary text */
-  --line: #e7dfcf; /*      warm hairline */
+  --muted: #686579; /*     violet-gray secondary text */
+  --line: #e7e5de; /*      warm hairline */
   --ink: #17152e; /*       always-dark surface (CTA block) */
-  --bone: #fbf9f4; /*      light text on ink */
+  --bone: #fcfcfa; /*      light text on ink */
   --accent: #bc7c33; /*    aged brass — the jewel */
-  --accent-soft: #f0dfbe; /* brass tint */
+  --accent-soft: #f3e8d4; /* brass tint */
   color-scheme: light only; /* light-only for now — don't let the OS flip form controls */
 }
 
@@ -36,6 +36,11 @@
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────────── */
+html,
+body {
+  background: var(--surface);
+}
+
 body {
   min-height: 100dvh;
 }
@@ -150,7 +155,7 @@ body {
 
 .hero-community {
   width: 100%;
-  margin-top: clamp(0.1rem, 0.9svh, 0.65rem);
+  margin-top: clamp(0.8rem, 2svh, 1.35rem);
 }
 
 .hero-cta {
@@ -188,35 +193,35 @@ body {
 .hero-community__portrait--1 {
   top: 1.25rem;
   left: 8%;
-  width: 8rem;
+  width: 7rem;
   transform: rotate(-2deg);
 }
 
 .hero-community__portrait--2 {
   bottom: 2.25rem;
   left: 23%;
-  width: 6.25rem;
+  width: 5.45rem;
   transform: rotate(1.5deg);
 }
 
 .hero-community__portrait--3 {
   top: 1rem;
   right: 9%;
-  width: 7.25rem;
+  width: 6.35rem;
   transform: rotate(1.5deg);
 }
 
 .hero-community__portrait--4 {
   right: 23%;
   bottom: 2rem;
-  width: 6.5rem;
+  width: 5.65rem;
   transform: rotate(-1.5deg);
 }
 
 .hero-community__portrait--5 {
   bottom: 0;
   left: 50%;
-  width: 5.25rem;
+  width: 4.65rem;
   transform: translateX(-50%) rotate(1deg);
 }
 
@@ -589,10 +594,9 @@ body {
   height: 3.5rem;
   margin: 0 auto 1.35rem;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
   border-radius: 999px;
-  background: var(--surface);
-  color: var(--accent);
+  background: var(--fg);
+  color: var(--surface);
 }
 
 .final-invitation__way {
@@ -914,30 +918,30 @@ body {
   .hero-community__portrait--1 {
     top: 0.75rem;
     left: 2%;
-    width: 5.25rem;
+    width: 4.7rem;
   }
 
   .hero-community__portrait--2 {
     bottom: 2.5rem;
     left: 4%;
-    width: 4rem;
+    width: 3.55rem;
   }
 
   .hero-community__portrait--3 {
     top: 0.5rem;
     right: 2%;
-    width: 4.9rem;
+    width: 4.4rem;
   }
 
   .hero-community__portrait--4 {
     right: 3%;
     bottom: 2.25rem;
-    width: 4.25rem;
+    width: 3.8rem;
   }
 
   .hero-community__portrait--5 {
     bottom: 0.25rem;
-    width: 3.75rem;
+    width: 3.35rem;
   }
 
   .hero-community__centre {
@@ -959,7 +963,7 @@ body {
   }
 
   .journey-enhanced {
-    height: 335svh;
+    height: 300svh;
   }
 
   .journey-line,
@@ -974,7 +978,7 @@ body {
   .journey-scene--1,
   .journey-scene--2,
   .journey-scene--3 {
-    top: clamp(8.5rem, 22svh, 11.5rem);
+    top: clamp(7.25rem, 19svh, 10rem);
   }
 
   .journey-node {
@@ -1015,6 +1019,15 @@ body {
   .final-invitation {
     padding-right: 1.5rem;
     padding-left: 1.5rem;
+  }
+
+  .post-layers {
+    margin-top: clamp(2rem, 5svh, 3.25rem);
+    gap: clamp(3rem, 6svh, 4.5rem);
+  }
+
+  .faq-section {
+    padding-top: clamp(2.75rem, 7svh, 4rem);
   }
 }
 
@@ -1059,6 +1072,11 @@ body {
   }
   /* Never leave revealed content hidden when motion is off. */
   .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .post-reveal {
     opacity: 1 !important;
     transform: none !important;
   }
@@ -1162,18 +1180,6 @@ body {
 
   .post-layers {
     min-height: auto !important;
-  }
-
-  .post-layers__stage {
-    position: static !important;
-    display: block !important;
-    min-height: auto !important;
-    overflow: visible !important;
-    padding: 4rem 0;
-  }
-
-  .post-layers__way {
-    display: none;
   }
 
   .post-layer {

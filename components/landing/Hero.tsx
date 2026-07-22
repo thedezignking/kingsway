@@ -15,7 +15,7 @@ export function Hero() {
         Whatever you&apos;re building, you don&apos;t have to do it alone.
       </h1>
       <p
-        className="anim-fade-up max-w-md text-pretty text-lg leading-relaxed text-muted sm:text-xl"
+        className="anim-fade-up max-w-sm text-pretty text-base leading-relaxed text-muted sm:max-w-md sm:text-lg"
         style={{ animationDelay: "170ms" }}
       >
         Kingsway is a community for young builders.

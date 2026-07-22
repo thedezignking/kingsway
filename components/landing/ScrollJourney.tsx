@@ -6,27 +6,27 @@ import { AnalyticsEvent, track } from "@/lib/analytics/events";
 const SCENES = [
   {
     id: "recognition",
-    eyebrow: "The private part",
-    title: "You are carrying more than people see.",
-    body: "There is the thing you are building, and there is the person trying to keep going while building it. Some questions do not need more content. They need a room where they can be said plainly.",
+    eyebrow: "The real work",
+    title: "You are building something. It can get heavy.",
+    body: "There is the work people can see, and there is the part you carry quietly: the doubt, the pressure, the drift, the month that did not go as planned. Kingsway makes room for that honesty.",
     questions: [
-      "What are you really building right now?",
-      "What has been heavy lately?",
-      "What would be easier to say around people who understand?",
+      "What are you building right now?",
+      "What has made it harder lately?",
+      "What do you need to say honestly?",
     ],
   },
   {
     id: "kingshour",
     eyebrow: "KingsHour",
-    title: "Bring the month as it actually was.",
-    body: "On the last Sunday of the month, we meet online. Not to perform progress. To look at what happened, what stayed difficult, what moved, and what each person is carrying back into the work.",
-    facts: ["Last Sunday", "Online", "Honest room"],
+    title: "Once a month, we bring the month into the room.",
+    body: "KingsHour happens online on the last Sunday of the month. We talk about what we tried, what felt heavy, what shifted, and what each person is carrying back into the work.",
+    facts: ["Last Sunday", "Online", "One honest conversation"],
   },
   {
     id: "census",
-    eyebrow: "First, the Census",
+    eyebrow: "The King's Census",
     title: "Before we gather, we listen.",
-    body: "The King’s Census is where the relationship starts. A few thoughtful questions help us understand who is here, what they are building, and what kind of room KingsHour needs to become.",
+    body: "The King's Census is our first conversation with you. A few thoughtful questions help us understand who is here, what each person is building, and what kind of room KingsHour needs to hold.",
   },
 ] as const;
 

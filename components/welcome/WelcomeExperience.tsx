@@ -43,7 +43,7 @@ export function WelcomeExperience() {
   return (
     <div className="flex flex-col gap-10">
       <header className="flex flex-col gap-3">
-        <div className="anim-crown flex h-16 w-16 items-center justify-center rounded-full bg-brass text-white">
+        <div className="anim-crown flex h-16 w-16 items-center justify-center rounded-full bg-fg text-surface">
           <Crown size={32} />
         </div>
         <h1 className="text-balance font-display text-4xl leading-tight">

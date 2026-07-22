@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -25,6 +25,11 @@ export const metadata: Metadata = {
   title: "Kingsway — a community for young builders",
   description:
     "Kingsway is a community for young builders. Once a month, we gather for one honest conversation at KingsHour.",
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#FCFCFA",
 };
 
 export default function RootLayout({

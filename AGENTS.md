@@ -132,9 +132,18 @@ Until we begin committing to GitHub, update this file at the end of each working
 
 ## Build progress
 
-_Last updated: 2026-07-21_
+_Last updated: 2026-07-22_
 
 **Done**
+- **Landing hero + welcome mark correction (2026-07-22):** restored the last committed hero portrait
+  composition after the compact Alvinn-style pass felt too small, but reduced only the surrounding
+  portrait boxes slightly so the visual is lighter without losing the intended spread. Added more
+  breathing room between the hero CTA and portrait visual. The hero, final CTA, Welcome page and
+  post-census celebration now share the same filled ink crown language (dark fill, light crown) rather
+  than using brown/brass crown badges. Journey copy remains the calmer PRD/drafts-informed version:
+  building can get heavy, KingsHour receives the real month, and the King's Census starts by listening.
+  Mobile scrollytelling spacing was tuned specifically at `<=700px`, and the iPhone browser/status-area
+  theme color uses the near-white canvas.
 - **Kingsway public experience redesign (2026-07-21):** canonical human-facing brand casing remains
   **Kingsway** across product UI, admin, emails, Supabase templates, metadata and documentation;
   compatibility-sensitive lowercase technical identifiers remain unchanged. Landing is now a
