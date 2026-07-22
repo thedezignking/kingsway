@@ -135,6 +135,28 @@ Until we begin committing to GitHub, update this file at the end of each working
 _Last updated: 2026-07-22_
 
 **Done**
+- **Narrow-screen journey boundary correction (2026-07-22):** retained the intended tablet/mobile
+  scroll pacing but shortened the physical sticky stage to a content-led `32rem–34rem`. This removes
+  the near-full-viewport dotted tail after the final Census copy and lets the normal FAQ section
+  follow much sooner. First copy now begins about `6rem` after the hero at the tested tall-narrow
+  breakpoint (down from roughly `11rem`), with the faded previous heading shifted in tandem to avoid
+  overlap. The post-journey margin is also smaller;
+  native scrolling, mobile scene timing, the faded previous heading and hidden future scenes remain.
+- **Public return path, Welcome and delivery polish (2026-07-22):** tightened only the five outer
+  hero portraits while preserving the centre crown and its copy, brought the constellation inward,
+  and added a small proof-line gap. Desktop scrollytelling now divides the complete visible journey
+  into three equal reading windows; mobile reaches FAQ sooner after the final scene. Every Census
+  visit starts fresh, but a completed King is detected at the email step and shown a calm return
+  state with Welcome/use-another-email actions. The server guard prevents an existing King from being
+  downgraded, overwritten, or sent another Welcome email, and the completion draft race that could
+  re-open celebration was removed. Fraunces was removed product-wide: public UI, Census, Welcome,
+  emails and legal pages now use Hanken Grotesk, with IBM Plex Mono retained for utility copy.
+  Welcome is a more ceremonial open path with the same filled ink crown language. The Welcome email
+  retains its substantial "thousands" opening and personal letter voice, while using one first-party
+  CTA, a reply invitation, an inline canonical crown and a lighter dotted structure; Resend tracking
+  was verified off. Canonical Open Graph/Twitter metadata, a 1200x630 social image, and an email-safe
+  crown image route were added. Production build and responsive browser checks pass; work remains
+  intentionally uncommitted.
 - **Landing hero + welcome mark correction (2026-07-22):** restored the last committed hero portrait
   composition after the compact Alvinn-style pass felt too small, but reduced only the surrounding
   portrait boxes slightly so the visual is lighter without losing the intended spread. Added more
@@ -368,14 +390,25 @@ _Last updated: 2026-07-22_
   Supabase dashboard.
 - Census copy in [lib/census/copy.ts](./lib/census/copy.ts) + landing/email strings are **first-pass**,
   on-voice but not final — refine without touching the engine.
-- Design: dark-mode ink blocks (FinalCTA, HowItWorks last card) sit only slightly
-  darker than the dark surface — acceptable, could add a hairline for more definition. `next/font/
-  google` (Fraunces/Hanken/IBM Plex Mono) fetches at build — needs network on first build/dev.
+- `next/font/google` (Hanken Grotesk and IBM Plex Mono) fetches at build and needs network on the
+  first build/dev run. Fraunces has been removed; do not reintroduce a serif without explicit sign-off.
 - `lib/supabase/types.ts` is hand-written; regenerate from Supabase once a project exists.
 - GitHub is connected at `thedezignking/kingsway`; this folder is an isolated repository on `main`.
 
 ## Decision log
 
+- **2026-07-22** — On tablet/mobile, preserve the scrollytelling cadence but size the sticky stage to
+  its content instead of the full viewport. This keeps the focused one-scene interaction while ending
+  the dotted path close to the final copy and avoiding a large empty tail before FAQ.
+- **2026-07-22** — Fraunces is no longer part of Kingsway. Use Hanken Grotesk for all human-facing
+  display and body typography, with IBM Plex Mono reserved for labels, dates and operational utility.
+- **2026-07-22** — A public Census visit always begins fresh. At the email step, an address belonging
+  to a completed King stops the flow without mutating stored membership or responses and offers a
+  calm route to Welcome or a different email. Welcome delivery remains a one-time lifecycle event.
+- **2026-07-22** — Welcome email copy may remain emotionally substantial; improve Primary-inbox odds
+  through personal single-purpose structure, one first-party CTA, a genuine reply invitation, and no
+  tracking—not by flattening Kingsway's voice. Resend tracking is off; Gmail retains final category
+  control. Email and social assets use the canonical geometric crown rather than a substitute icon.
 - **2026-07-21** — After an editorial review, **Kingsway** remains the canonical display name; the
   brief camel-case experiment was rejected as too stylized. Preserve lowercase technical identifiers
   (domain/repo/package/env/cookies/storage/

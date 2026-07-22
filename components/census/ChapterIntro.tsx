@@ -21,7 +21,7 @@ export function ChapterIntro({
     <div className="flex flex-col gap-6">
       <p className="eyebrow">{chapterLabel}</p>
       <div className="flex flex-col gap-3">
-        <h2 className="text-balance font-display text-3xl leading-tight sm:text-4xl">
+        <h2 className="text-balance font-sans text-3xl font-medium leading-tight tracking-[-0.012em] sm:text-4xl">
           {copy.title}
         </h2>
         <p className="text-pretty text-lg leading-relaxed text-muted">{copy.body}</p>

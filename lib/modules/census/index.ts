@@ -21,6 +21,7 @@ export interface SaveCensusInput {
 export interface CensusResult {
   memberId: string | null;
   persisted: boolean; // false when Supabase isn't configured (keyless scaffold)
+  existingKing?: boolean;
 }
 
 const QUESTION_IDS = new Set(CENSUS_QUESTIONS.map((q) => q.id));
@@ -61,6 +62,19 @@ export async function saveCensus(input: SaveCensusInput): Promise<CensusResult> 
   }
 
   const completed = input.completed === true;
+
+  // A completed King never re-enters the Census write path. Besides powering the gentle
+  // "already a King" state on the email screen, this prevents a repeat visit from downgrading the
+  // member to `incomplete`, overwriting their Census, or attempting Welcome delivery again.
+  const { data: existingMember, error: existingMemberError } = await db
+    .from("members")
+    .select("status")
+    .eq("email", fields.email)
+    .maybeSingle();
+  if (existingMemberError) throw existingMemberError;
+  if (existingMember?.status === "king") {
+    return { memberId: null, persisted: false, existingKing: true };
+  }
 
   // Upsert the Member by unique email. Keep status 'incomplete' until completion.
   const { data: member, error: memberErr } = await db

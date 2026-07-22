@@ -4,6 +4,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import type { CensusQuestion } from "@/lib/census/types";
 import { questionPrompt, questionHelper, questionPlaceholder, sliderConfig } from "@/lib/census/copy";
 import { CountrySelect } from "./inputs/CountrySelect";
@@ -15,6 +16,8 @@ interface Props {
   question: CensusQuestion;
   value: unknown;
   error: string | null;
+  checking?: boolean;
+  existingKing?: boolean;
   chapterLabel: string;
   /** Other answers so far — e.g. the phone input reads `country` to seed its dial code. */
   context?: Record<string, unknown>;
@@ -23,6 +26,7 @@ interface Props {
   onAutoAdvance: () => void;
   onNext: () => void;
   onBack: () => void;
+  onUseAnotherEmail?: () => void;
   canGoBack: boolean;
   isLast: boolean;
 }
@@ -31,17 +35,49 @@ export function QuestionScreen({
   question,
   value,
   error,
+  checking = false,
+  existingKing = false,
   chapterLabel,
   context,
   onChange,
   onAutoAdvance,
   onNext,
   onBack,
+  onUseAnotherEmail,
   canGoBack,
   isLast,
 }: Props) {
   const helper = questionHelper(question.id);
   const showNext = question.autoAdvance === false;
+
+  if (question.id === "email" && existingKing) {
+    return (
+      <div className="flex flex-col gap-6">
+        <p className="eyebrow">{chapterLabel}</p>
+        <div className="flex flex-col gap-3">
+          <h2 className="text-balance font-sans text-2xl font-semibold leading-snug tracking-tight sm:text-[1.7rem]">
+            You&apos;re already a King.
+          </h2>
+          <p className="max-w-md text-pretty leading-relaxed text-muted">
+            This email has already completed the King&apos;s Census, so there&apos;s no need to take it
+            again.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link href="/welcome" className="primary-pill">
+            See what happens next
+          </Link>
+          <button
+            type="button"
+            onClick={onUseAnotherEmail}
+            className="min-h-11 rounded-full border border-line px-5 py-2 text-sm font-medium transition hover:border-brass/50 hover:bg-brass-soft/30"
+          >
+            Use another email
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -77,9 +113,10 @@ export function QuestionScreen({
           <button
             type="button"
             onClick={onNext}
-            className="ml-auto rounded-full bg-fg px-6 py-2.5 text-sm font-semibold text-surface transition duration-200 hover:-translate-y-px hover:opacity-90 active:translate-y-0"
+            disabled={checking}
+            className="ml-auto rounded-full bg-fg px-6 py-2.5 text-sm font-semibold text-surface transition duration-200 hover:-translate-y-px hover:opacity-90 active:translate-y-0 disabled:cursor-wait disabled:opacity-60"
           >
-            {isLast ? "Finish" : "Continue"}
+            {checking ? "Checking…" : isLast ? "Finish" : "Continue"}
           </button>
         )}
       </div>

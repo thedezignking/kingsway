@@ -12,7 +12,9 @@ export default function TermsPage() {
       </header>
       <main className="flex flex-col gap-4 pb-20 pt-8">
         <p className="eyebrow">Terms</p>
-        <h1 className="font-display text-3xl">The basics of being a King</h1>
+        <h1 className="font-sans text-3xl font-medium tracking-[-0.012em]">
+          The basics of being a King
+        </h1>
         <p className="text-pretty leading-relaxed text-muted">
           We&apos;re still writing this in full. The spirit of it: Kingsway is free, it&apos;s built on
           trust, and we ask you to show up in good faith. Nothing here is a contract yet — the complete

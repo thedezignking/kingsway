@@ -14,7 +14,7 @@ export function EncouragementInterstitial({
 }) {
   return (
     <div className="flex flex-col items-center gap-6 py-10 text-center">
-      <p className="max-w-md text-balance font-display text-2xl leading-snug">
+      <p className="max-w-md text-balance font-sans text-2xl font-medium leading-snug tracking-[-0.01em]">
         {nudge(placement, firstName)}
       </p>
       <button

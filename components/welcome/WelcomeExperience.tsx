@@ -1,7 +1,7 @@
 // Welcome Experience: the first moment of belonging, not a confirmation page.
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { loadKingName } from "@/lib/census/storage";
 import { buildIcs } from "@/lib/email/ics";
 import { nextKingsHour } from "@/lib/kingshour/schedule";
@@ -41,21 +41,22 @@ export function WelcomeExperience() {
   }
 
   return (
-    <div className="flex flex-col gap-10">
-      <header className="flex flex-col gap-3">
-        <div className="anim-crown flex h-16 w-16 items-center justify-center rounded-full bg-fg text-surface">
-          <Crown size={32} />
+    <div className="welcome-experience">
+      <header className="welcome-arrival">
+        <div className="welcome-arrival__mark anim-crown">
+          <Crown size={36} />
         </div>
-        <h1 className="text-balance font-display text-4xl leading-tight">
+        <p className="eyebrow text-brass">Welcome to Kingsway</p>
+        <h1 className="mt-4 max-w-xl text-balance font-sans text-4xl font-medium leading-[1.08] tracking-[-0.015em] sm:text-5xl">
           {name ? `Welcome home, ${name}.` : "Welcome home."}
         </h1>
-        <p className="text-pretty text-lg text-muted">
+        <p className="mt-4 max-w-md text-pretty text-lg leading-relaxed text-muted">
           You&apos;re officially a King. Here&apos;s how Kingsway works from here.
         </p>
       </header>
 
       <div className="welcome-way">
-        <Item title="KingsHour is the heart of it">
+        <Item order={0} title="KingsHour is the heart of it">
           Once a month, on the last Sunday, we gather online. Your next one is{" "}
           <strong className="font-semibold text-fg">{nextDate}</strong>.
           <div className="mt-4">
@@ -65,12 +66,12 @@ export function WelcomeExperience() {
           </div>
         </Item>
 
-        <Item title="Email is your home base">
+        <Item order={1} title="Email is your home base">
           Everything important lives in your inbox — the topic, the join link, and a follow-up after
           each session. We send few emails, and each one has a point.
         </Item>
 
-        <Item title="WhatsApp Status, not a group">
+        <Item order={2} title="WhatsApp Status, not a group">
           No noisy group chat. Instead, connect with the founder and watch their WhatsApp Status for
           lightweight reminders and building updates.
           <div className="mt-4">
@@ -86,7 +87,7 @@ export function WelcomeExperience() {
           <span className="mt-2 block font-mono text-xs text-muted">{whatsappDisplay()}</span>
         </Item>
 
-        <Item title="What to expect next">
+        <Item order={3} title="What to expect next">
           A welcome email is on its way. Before your first KingsHour, we&apos;ll send the topic and the
           link. Between gatherings, keep building — that&apos;s the whole point.
         </Item>
@@ -95,9 +96,20 @@ export function WelcomeExperience() {
   );
 }
 
-function Item({ title, children }: { title: string; children: React.ReactNode }) {
+function Item({
+  order,
+  title,
+  children,
+}: {
+  order: number;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="welcome-way__item">
+    <section
+      className="welcome-way__item"
+      style={{ "--welcome-order": order } as CSSProperties}
+    >
       <span className="welcome-way__node" aria-hidden="true" />
       <h2 className="font-sans text-lg font-semibold tracking-tight">{title}</h2>
       <div className="mt-2 text-sm leading-relaxed text-muted">{children}</div>

@@ -1,15 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-// Type system (frontend-design pass): Fraunces = warm literary display ("mentor & friend"),
-// Hanken Grotesk = friendly humanist body, IBM Plex Mono = builder-flavored labels/dates/cadence.
-const display = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-});
+// Type system: Hanken Grotesk carries the public voice; IBM Plex Mono is reserved for
+// builder-flavoured labels, dates, and cadence. No serif/display face in the product.
 const sans = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -22,9 +16,25 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://kingsway.thedezignking.com",
+  ),
   title: "Kingsway — a community for young builders",
   description:
     "Kingsway is a community for young builders. Once a month, we gather for one honest conversation at KingsHour.",
+  openGraph: {
+    type: "website",
+    siteName: "Kingsway",
+    title: "Whatever you’re building, you don’t have to do it alone.",
+    description: "Kingsway is a community for young builders.",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Kingsway" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Whatever you’re building, you don’t have to do it alone.",
+    description: "Kingsway is a community for young builders.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export const viewport: Viewport = {
@@ -44,7 +54,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body
-        className={`${display.variable} ${sans.variable} ${mono.variable} bg-surface font-sans text-fg antialiased`}
+        className={`${sans.variable} ${mono.variable} bg-surface font-sans text-fg antialiased`}
       >
         {children}
       </body>

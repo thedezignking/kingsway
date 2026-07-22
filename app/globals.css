@@ -57,11 +57,6 @@ body {
   border-radius: 4px;
 }
 
-/* Display face uses old-style figures + a touch of optical warmth. */
-.font-display {
-  font-optical-sizing: auto;
-}
-
 /* ── Signature utilities ────────────────────────────────────────────────── */
 .eyebrow {
   font-family: var(--font-mono), monospace;
@@ -192,36 +187,36 @@ body {
 
 .hero-community__portrait--1 {
   top: 1.25rem;
-  left: 8%;
-  width: 7rem;
+  left: 17%;
+  width: 6.1rem;
   transform: rotate(-2deg);
 }
 
 .hero-community__portrait--2 {
   bottom: 2.25rem;
-  left: 23%;
-  width: 5.45rem;
+  left: 26%;
+  width: 5rem;
   transform: rotate(1.5deg);
 }
 
 .hero-community__portrait--3 {
   top: 1rem;
-  right: 9%;
-  width: 6.35rem;
+  right: 17%;
+  width: 5.55rem;
   transform: rotate(1.5deg);
 }
 
 .hero-community__portrait--4 {
-  right: 23%;
+  right: 26%;
   bottom: 2rem;
-  width: 5.65rem;
+  width: 5.2rem;
   transform: rotate(-1.5deg);
 }
 
 .hero-community__portrait--5 {
   bottom: 0;
   left: 50%;
-  width: 4.65rem;
+  width: 4.3rem;
   transform: translateX(-50%) rotate(1deg);
 }
 
@@ -303,6 +298,7 @@ body {
 
 .hero-community__proof {
   display: flex;
+  margin-top: clamp(0.45rem, 0.9svh, 0.7rem);
   flex-direction: column;
   align-items: center;
   gap: 0.55rem;
@@ -377,7 +373,7 @@ body {
 }
 
 .journey-scene--1 { top: 17%; }
-.journey-scene--2 { top: 48%; }
+.journey-scene--2 { top: 39%; }
 .journey-scene--3 { top: 61%; }
 
 .journey-scene[data-state="active"] {
@@ -643,9 +639,52 @@ body {
 }
 
 /* Welcome continues the same open path without turning information into cards. */
+.welcome-experience {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7svh, 4.5rem);
+}
+
+.welcome-arrival {
+  position: relative;
+  display: flex;
+  padding: clamp(2.25rem, 7svh, 4.25rem) 0 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.welcome-arrival::after {
+  position: absolute;
+  bottom: -2.75rem;
+  left: 50%;
+  width: 2px;
+  height: 2.4rem;
+  content: "";
+  transform: translateX(-50%);
+  color: var(--accent);
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1.4px);
+  background-position: center top;
+  background-size: 2px 9px;
+  background-repeat: repeat-y;
+}
+
+.welcome-arrival__mark {
+  display: grid;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: 1.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--surface);
+}
+
 .welcome-way {
   position: relative;
   display: flex;
+  width: min(100%, 36rem);
+  margin: 0 auto;
   flex-direction: column;
 }
 
@@ -666,6 +705,8 @@ body {
 .welcome-way__item {
   position: relative;
   padding: 0 0 2.5rem 2.5rem;
+  animation: welcome-item-in 600ms var(--ease-out-expo) both;
+  animation-delay: calc(260ms + var(--welcome-order) * 70ms);
 }
 
 .welcome-way__item:last-child {
@@ -796,6 +837,18 @@ body {
     transform: translateY(0) scale(1);
   }
 }
+
+@keyframes welcome-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes glow-pulse {
   0%,
   100% {
@@ -835,6 +888,10 @@ body {
     height: 330svh;
   }
 
+  .journey-stage {
+    height: clamp(32rem, 68svh, 34rem);
+  }
+
   .journey-line,
   .journey-line__active {
     left: clamp(1.75rem, 4vw, 2.75rem);
@@ -847,7 +904,7 @@ body {
   .journey-scene--1,
   .journey-scene--2,
   .journey-scene--3 {
-    top: clamp(9rem, 24svh, 14rem);
+    top: clamp(6rem, 10svh, 8rem);
   }
 
   .journey-node {
@@ -856,7 +913,7 @@ body {
 
   .journey-previous-title {
     position: absolute;
-    top: clamp(3.5rem, 8.5svh, 6rem);
+    top: clamp(1.5rem, 3svh, 2.5rem);
     right: clamp(1.5rem, 5vw, 3rem);
     left: clamp(4.5rem, 11vw, 7.25rem);
     display: block;
@@ -917,31 +974,31 @@ body {
 
   .hero-community__portrait--1 {
     top: 0.75rem;
-    left: 2%;
-    width: 4.7rem;
+    left: 13%;
+    width: 4.05rem;
   }
 
   .hero-community__portrait--2 {
     bottom: 2.5rem;
-    left: 4%;
-    width: 3.55rem;
+    left: 11%;
+    width: 3.3rem;
   }
 
   .hero-community__portrait--3 {
     top: 0.5rem;
-    right: 2%;
-    width: 4.4rem;
+    right: 13%;
+    width: 3.8rem;
   }
 
   .hero-community__portrait--4 {
-    right: 3%;
+    right: 11%;
     bottom: 2.25rem;
-    width: 3.8rem;
+    width: 3.5rem;
   }
 
   .hero-community__portrait--5 {
     bottom: 0.25rem;
-    width: 3.35rem;
+    width: 3.1rem;
   }
 
   .hero-community__centre {
@@ -978,7 +1035,7 @@ body {
   .journey-scene--1,
   .journey-scene--2,
   .journey-scene--3 {
-    top: clamp(7.25rem, 19svh, 10rem);
+    top: clamp(5rem, 8svh, 6rem);
   }
 
   .journey-node {
@@ -997,7 +1054,7 @@ body {
   }
 
   .journey-previous-title {
-    top: clamp(3rem, 7.5svh, 4.75rem);
+    top: clamp(0.75rem, 1.5svh, 1rem);
     right: 1rem;
     left: 3.85rem;
     font-size: clamp(1.05rem, 5vw, 1.45rem);
@@ -1022,7 +1079,7 @@ body {
   }
 
   .post-layers {
-    margin-top: clamp(2rem, 5svh, 3.25rem);
+    margin-top: clamp(1rem, 2.5svh, 1.75rem);
     gap: clamp(3rem, 6svh, 4.5rem);
   }
 
@@ -1085,6 +1142,7 @@ body {
   .hero-community__portrait > *,
   .hero-community__crown,
   .hero-community__proof,
+  .welcome-way__item,
   .faq-heading,
   .faq-item,
   .final-invitation__mark,

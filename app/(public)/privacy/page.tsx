@@ -12,7 +12,9 @@ export default function PrivacyPage() {
       </header>
       <main className="flex flex-col gap-4 pb-20 pt-8">
         <p className="eyebrow">Privacy</p>
-        <h1 className="font-display text-3xl">How we handle your information</h1>
+        <h1 className="font-sans text-3xl font-medium tracking-[-0.012em]">
+          How we handle your information
+        </h1>
         <p className="text-pretty leading-relaxed text-muted">
           We&apos;re still writing this in full. The short version: we collect only what the King&apos;s
           Census asks for, we use it to run KingsHour and stay in touch, and we never sell it. If you

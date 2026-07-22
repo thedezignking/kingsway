@@ -28,6 +28,8 @@ export function CensusEngine() {
   const [answers, setAnswers] = useState<Record<string, unknown>>({});
   const [error, setError] = useState<string | null>(null);
   const [ack, setAck] = useState<string | null>(null);
+  const [checkingEmail, setCheckingEmail] = useState(false);
+  const [existingKing, setExistingKing] = useState(false);
   const memberIdRef = useRef<string | undefined>(undefined);
   const shownAcks = useRef<Set<string>>(new Set());
   const finalized = useRef(false);
@@ -68,12 +70,16 @@ export function CensusEngine() {
   // Persist the current draft locally, and to the server once we have an email.
   const persist = useCallback(
     (nextAnswers: Record<string, unknown>, nextIndex: number, completed = false) => {
-      saveDraft({
-        answers: nextAnswers,
-        screenIndex: nextIndex,
-        memberId: memberIdRef.current,
-        updatedAt: Date.now(),
-      });
+      // Completion owns the local cleanup. Saving before or after its request can race with
+      // clearDraft() and accidentally restore the celebration screen on the next visit.
+      if (!completed) {
+        saveDraft({
+          answers: nextAnswers,
+          screenIndex: nextIndex,
+          memberId: memberIdRef.current,
+          updatedAt: Date.now(),
+        });
+      }
       const email = nextAnswers.email;
       if (typeof email !== "string" || !email.includes("@")) return; // not enough to save server-side yet
       const current = sequence[nextIndex];
@@ -95,12 +101,14 @@ export function CensusEngine() {
         .then((data) => {
           if (data?.memberId) {
             memberIdRef.current = data.memberId;
-            saveDraft({
-              answers: nextAnswers,
-              screenIndex: nextIndex,
-              memberId: data.memberId,
-              updatedAt: Date.now(),
-            });
+            if (!completed) {
+              saveDraft({
+                answers: nextAnswers,
+                screenIndex: nextIndex,
+                memberId: data.memberId,
+                updatedAt: Date.now(),
+              });
+            }
           }
         })
         .catch(() => {
@@ -138,6 +146,53 @@ export function CensusEngine() {
       return;
     }
     const nextAnswers = { ...answersRef.current };
+
+    if (q.id === "email") {
+      const nextIndex = Math.min(index + 1, sequence.length - 1);
+      const current = sequence[nextIndex];
+      setCheckingEmail(true);
+      fetch("/api/census", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          memberId: memberIdRef.current,
+          version: CENSUS_VERSION,
+          answers: nextAnswers,
+          currentScreen: current?.kind === "question" ? current.question.id : current?.kind,
+          chapter: current?.chapter ?? chapter,
+          completed: false,
+        }),
+      })
+        .then(async (response) => {
+          if (!response.ok) throw new Error("Email check failed");
+          return response.json();
+        })
+        .then((data) => {
+          if (data?.existingKing) {
+            saveKingName(firstName);
+            clearDraft();
+            setExistingKing(true);
+            return;
+          }
+
+          if (data?.memberId) memberIdRef.current = data.memberId;
+          setIndex(nextIndex);
+          saveDraft({
+            answers: nextAnswers,
+            screenIndex: nextIndex,
+            memberId: memberIdRef.current,
+            updatedAt: Date.now(),
+          });
+        })
+        .catch(() => {
+          // If the status check is unavailable, preserve the Census's offline-friendly behavior.
+          // The server guard still protects an existing King when persistence resumes.
+          advance(nextAnswers);
+        })
+        .finally(() => setCheckingEmail(false));
+      return;
+    }
+
     const ackLine = acknowledgment(q.id, value, firstName);
     if (ackLine && !shownAcks.current.has(q.id)) {
       shownAcks.current.add(q.id);
@@ -149,7 +204,15 @@ export function CensusEngine() {
       return;
     }
     advance(nextAnswers);
-  }, [screen, firstName, advance]);
+  }, [screen, firstName, advance, index, sequence, chapter]);
+
+  const useAnotherEmail = useCallback(() => {
+    const next = { ...answersRef.current, email: "" };
+    answersRef.current = next;
+    setAnswers(next);
+    setExistingKing(false);
+    setError(null);
+  }, []);
 
   const goBack = useCallback(() => {
     setError(null);
@@ -202,12 +265,15 @@ export function CensusEngine() {
             question={s.question}
             value={answers[s.question.id]}
             error={error}
+            checking={checkingEmail}
+            existingKing={existingKing}
             chapterLabel={chapterLabel}
             context={answers}
             onChange={(v) => setAnswer(s.question.id, v)}
             onAutoAdvance={goNextFromQuestion}
             onNext={goNextFromQuestion}
             onBack={goBack}
+            onUseAnotherEmail={useAnotherEmail}
             canGoBack={index > 0}
             isLast={index >= sequence.length - 2}
           />

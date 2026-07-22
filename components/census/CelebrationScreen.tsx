@@ -36,7 +36,7 @@ export function CelebrationScreen({ firstName }: { firstName?: string }) {
       <div className="anim-crown flex h-20 w-20 items-center justify-center rounded-full bg-fg text-surface">
         <Crown size={40} />
       </div>
-      <h2 className="text-balance font-display text-3xl leading-tight sm:text-4xl">
+      <h2 className="text-balance font-sans text-3xl font-medium leading-tight tracking-[-0.012em] sm:text-4xl">
         {copy.headline}
       </h2>
       <div className="flex flex-col gap-1.5 text-pretty leading-relaxed text-muted">

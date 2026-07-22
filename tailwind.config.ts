@@ -24,7 +24,6 @@ const config: Config = {
         "brass-soft": "var(--accent-soft)", // brass tints (selected chip, halos)
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },

@@ -48,18 +48,42 @@ export function ScrollJourney() {
       const rect = section.getBoundingClientRect();
       const scrollable = Math.max(section.offsetHeight - window.innerHeight, 1);
       const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-      const nextIndex = Math.min(SCENES.length - 1, Math.floor(progress * SCENES.length));
+      // On phones, hold the middle conversation long enough to read and bring the final scene in
+      // late enough that it hands into the FAQ without an extra unchanged-scroll stretch.
+      const mobile = window.innerWidth <= 700;
+      let nextIndex: number;
+      let interactionProgress = progress;
+      if (mobile) {
+        if (progress >= 0.76) nextIndex = 2;
+        else if (progress >= 0.34) nextIndex = 1;
+        else nextIndex = 0;
+      } else {
+        // Desktop scene one becomes visible while the section is entering the viewport. Count that
+        // entrance distance as part of the journey, then divide the full visible travel into three
+        // equal windows. This keeps the perceived dwell time equal—not merely the sticky portion.
+        const firstScene = section.querySelector<HTMLElement>(".journey-scene--1");
+        const entranceDistance = Math.max(window.innerHeight - (firstScene?.offsetTop ?? 0), 0);
+        const visibleTravel = Math.min(
+          entranceDistance + scrollable,
+          Math.max(0, entranceDistance - rect.top),
+        );
+        interactionProgress = visibleTravel / Math.max(entranceDistance + scrollable, 1);
+        nextIndex = Math.min(
+          SCENES.length - 1,
+          Math.floor(interactionProgress * SCENES.length),
+        );
+      }
 
       if (activeLineRef.current) {
-        activeLineRef.current.style.transform = `scaleY(${progress})`;
+        activeLineRef.current.style.transform = `scaleY(${interactionProgress})`;
       }
 
       setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
-      if (!viewed.current.has(nextIndex) && progress > 0) {
+      if (!viewed.current.has(nextIndex) && interactionProgress > 0) {
         viewed.current.add(nextIndex);
         track(AnalyticsEvent.LANDING_SCROLL_DEPTH, {
           scene: SCENES[nextIndex].id,
-          depth: Math.round(progress * 100),
+          depth: Math.round(interactionProgress * 100),
         });
       }
     };

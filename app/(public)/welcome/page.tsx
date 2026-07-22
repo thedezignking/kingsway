@@ -6,11 +6,11 @@ export const metadata = { title: "Welcome — Kingsway" };
 
 export default function WelcomePage() {
   return (
-    <div className="mx-auto w-full max-w-2xl px-6">
+    <div className="mx-auto w-full max-w-3xl px-6">
       <header className="py-6">
         <Wordmark />
       </header>
-      <main className="pb-16 pt-4">
+      <main className="pb-20">
         <WelcomeExperience />
       </main>
     </div>
