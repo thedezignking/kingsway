@@ -45,14 +45,20 @@ export function AdminShell({
               <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
                 {admin.role.replace("_", " ")}
               </span>
-              <form action={signOut}>
-                <button
-                  type="submit"
-                  className="text-xs text-muted underline-offset-4 transition-colors hover:text-fg hover:underline"
-                >
-                  Sign out
-                </button>
-              </form>
+              {admin.isDevelopmentBypass ? (
+                <span className="font-mono text-[9px] uppercase tracking-wider text-brass">
+                  Auth bypassed
+                </span>
+              ) : (
+                <form action={signOut}>
+                  <button
+                    type="submit"
+                    className="text-xs text-muted underline-offset-4 transition-colors hover:text-fg hover:underline"
+                  >
+                    Sign out
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </aside>

@@ -11,7 +11,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CENSUS_CHAPTERS, CENSUS_VERSION } from "@/lib/census/questions";
 import { buildSequence, validate, type Screen } from "@/lib/census/sequence";
 import { acknowledgment } from "@/lib/census/copy";
-import { loadDraft, saveDraft, clearDraft, saveKingName } from "@/lib/census/storage";
+import {
+  loadDraft,
+  saveDraft,
+  clearDraft,
+  saveKingName,
+  loadPendingKingsHour,
+  clearPendingKingsHour,
+} from "@/lib/census/storage";
 import { track, AnalyticsEvent } from "@/lib/analytics/events";
 import { ChapterShell } from "./ChapterShell";
 import { ChapterIntro } from "./ChapterIntro";
@@ -31,6 +38,7 @@ export function CensusEngine() {
   const [checkingEmail, setCheckingEmail] = useState(false);
   const [existingKing, setExistingKing] = useState(false);
   const memberIdRef = useRef<string | undefined>(undefined);
+  const pendingSessionIdRef = useRef<string | undefined>(undefined);
   const shownAcks = useRef<Set<string>>(new Set());
   const finalized = useRef(false);
   const [hydrated, setHydrated] = useState(false);
@@ -41,12 +49,24 @@ export function CensusEngine() {
   // Resume from a saved draft on mount.
   useEffect(() => {
     const draft = loadDraft();
+    const pendingKingsHour = loadPendingKingsHour();
+    const querySessionId =
+      typeof window === "undefined"
+        ? null
+        : new URLSearchParams(window.location.search).get("session");
     if (draft) {
       const restored = draft.answers ?? {};
+      if (pendingKingsHour?.email && !restored.email) restored.email = pendingKingsHour.email;
       setAnswers(restored);
       answersRef.current = restored;
       setIndex(Math.min(draft.screenIndex ?? 0, sequence.length - 1));
       memberIdRef.current = draft.memberId;
+      pendingSessionIdRef.current = draft.pendingSessionId ?? pendingKingsHour?.sessionId ?? querySessionId ?? undefined;
+    } else if (pendingKingsHour?.email || querySessionId) {
+      const restored = pendingKingsHour?.email ? { email: pendingKingsHour.email } : {};
+      setAnswers(restored);
+      answersRef.current = restored;
+      pendingSessionIdRef.current = pendingKingsHour?.sessionId ?? querySessionId ?? undefined;
     }
     setHydrated(true);
     track(AnalyticsEvent.CENSUS_START);
@@ -77,6 +97,7 @@ export function CensusEngine() {
           answers: nextAnswers,
           screenIndex: nextIndex,
           memberId: memberIdRef.current,
+          pendingSessionId: pendingSessionIdRef.current,
           updatedAt: Date.now(),
         });
       }
@@ -90,6 +111,7 @@ export function CensusEngine() {
         currentScreen: current?.kind === "question" ? current.question.id : current?.kind,
         chapter: current?.chapter ?? chapter,
         completed,
+        sessionId: pendingSessionIdRef.current,
       };
       const method = completed ? "PATCH" : "POST";
       fetch("/api/census", {
@@ -106,6 +128,7 @@ export function CensusEngine() {
                 answers: nextAnswers,
                 screenIndex: nextIndex,
                 memberId: data.memberId,
+                pendingSessionId: pendingSessionIdRef.current,
                 updatedAt: Date.now(),
               });
             }
@@ -155,9 +178,10 @@ export function CensusEngine() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          memberId: memberIdRef.current,
-          version: CENSUS_VERSION,
-          answers: nextAnswers,
+            memberId: memberIdRef.current,
+            sessionId: pendingSessionIdRef.current,
+            version: CENSUS_VERSION,
+            answers: nextAnswers,
           currentScreen: current?.kind === "question" ? current.question.id : current?.kind,
           chapter: current?.chapter ?? chapter,
           completed: false,
@@ -181,6 +205,7 @@ export function CensusEngine() {
             answers: nextAnswers,
             screenIndex: nextIndex,
             memberId: memberIdRef.current,
+            pendingSessionId: pendingSessionIdRef.current,
             updatedAt: Date.now(),
           });
         })
@@ -219,6 +244,7 @@ export function CensusEngine() {
       track(AnalyticsEvent.CENSUS_COMPLETE);
       saveKingName(firstName); // keep the name so /welcome can greet them
       clearDraft(); // the journey is done; drop the local draft
+      clearPendingKingsHour();
     }
   }, [screen, answers, index, persist, firstName]);
 

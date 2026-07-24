@@ -13,6 +13,7 @@ export interface AdminUser {
   id: string;
   email: string;
   role: AdminRole;
+  isDevelopmentBypass?: boolean;
 }
 
 export type AdminAccessState =
@@ -56,6 +57,8 @@ const ADMIN_ROLES: readonly AdminRole[] = [
  * role, and `getUser()` revalidates it against Auth on every protected server request.
  */
 export async function getCurrentAdmin(): Promise<AdminUser | null> {
+  if (isLocalAdminPreview()) return developmentAdmin();
+
   const supabase = createServerSupabase();
   const {
     data: { user },
@@ -74,6 +77,10 @@ export async function getCurrentAdmin(): Promise<AdminUser | null> {
 
 /** One server-side decision for pages and API routes. Never rely on middleware alone. */
 export async function getAdminAccessState(): Promise<AdminAccessState> {
+  if (isLocalAdminPreview()) {
+    return { status: "ready", admin: developmentAdmin() };
+  }
+
   const supabase = createServerSupabase();
   const {
     data: { user },
@@ -104,4 +111,22 @@ export function safeAdminDestination(value: string | null | undefined): string {
   if (!value || !value.startsWith("/admin") || value.startsWith("//")) return "/admin";
   if (/^\/admin\/(login|mfa|password|unauthorized)(\/|\?|$)/.test(value)) return "/admin";
   return value;
+}
+
+/**
+ * Local UI work should not depend on a live MFA session. This condition is deliberately tied to
+ * Next.js development mode: Vercel previews and production builds run with NODE_ENV=production and
+ * therefore always use the full Supabase identity + TOTP gate.
+ */
+export function isLocalAdminPreview(): boolean {
+  return process.env.NODE_ENV === "development";
+}
+
+function developmentAdmin(): AdminUser {
+  return {
+    id: "local-admin-preview",
+    email: "Local admin preview",
+    role: "super_admin",
+    isDevelopmentBypass: true,
+  };
 }

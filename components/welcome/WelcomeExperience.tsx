@@ -3,11 +3,11 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import { loadKingName } from "@/lib/census/storage";
-import { buildIcs } from "@/lib/email/ics";
 import { nextKingsHour } from "@/lib/kingshour/schedule";
 import { track, AnalyticsEvent } from "@/lib/analytics/events";
 import { whatsappDisplay, whatsappLink } from "@/lib/whatsapp";
 import { Crown } from "@/components/shared/Crown";
+import { AddToCalendar } from "@/components/shared/AddToCalendar";
 
 export function WelcomeExperience() {
   const [name, setName] = useState<string | null>(null);
@@ -22,23 +22,8 @@ export function WelcomeExperience() {
     track(AnalyticsEvent.WELCOME_VIEW);
   }, []);
 
-  function addToCalendar() {
-    const start = nextKingsHour();
-    const end = new Date(start.getTime() + 60 * 60 * 1000);
-    const ics = buildIcs({
-      uid: `kingshour-${start.toISOString().slice(0, 10)}@kingsway`,
-      title: "KingsHour",
-      description: "The monthly Kingsway gathering. Link to follow by email.",
-      start,
-      end,
-    });
-    const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "kingshour.ics";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+  const start = nextKingsHour();
+  const end = new Date(start.getTime() + 60 * 60 * 1000);
 
   return (
     <div className="welcome-experience">
@@ -60,9 +45,16 @@ export function WelcomeExperience() {
           Once a month, on the last Sunday, we gather online. Your next one is{" "}
           <strong className="font-semibold text-fg">{nextDate}</strong>.
           <div className="mt-4">
-            <button type="button" onClick={addToCalendar} className="primary-pill">
-              Add to calendar
-            </button>
+            <AddToCalendar
+              event={{
+                uid: `kingshour-${start.toISOString().slice(0, 10)}@kingsway`,
+                title: "KingsHour",
+                description: "The monthly Kingsway gathering. The exact join link will come by email.",
+                start,
+                end,
+                url: typeof window === "undefined" ? undefined : window.location.origin,
+              }}
+            />
           </div>
         </Item>
 

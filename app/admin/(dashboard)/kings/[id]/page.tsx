@@ -4,6 +4,7 @@ import { getMemberProfile } from "@/lib/modules/members";
 import { createServiceSupabaseOrNull } from "@/lib/supabase/server";
 import { MemberProfile } from "@/components/admin/MemberProfile";
 import { NotConfigured } from "@/components/admin/NotConfigured";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function AdminKingProfilePage({
   if (createServiceSupabaseOrNull() === null) {
     return (
       <section className="flex flex-col gap-4">
-        <h1 className="text-base font-semibold">King</h1>
+        <AdminPageHeader title="King" description="Complete member record." />
         <NotConfigured />
       </section>
     );
@@ -24,7 +25,11 @@ export default async function AdminKingProfilePage({
   if (!profile) notFound();
   return (
     <section className="flex flex-col gap-4">
-      <h1 className="text-base font-semibold">King</h1>
+      <AdminPageHeader
+        title={profile.member.first_name}
+        description={profile.member.email}
+        meta={profile.member.status === "king" ? "Census complete" : "Census incomplete"}
+      />
       <MemberProfile profile={profile} />
     </section>
   );

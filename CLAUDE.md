@@ -131,9 +131,38 @@ Until we begin committing to GitHub, update this file at the end of each working
 
 ## Build progress
 
-_Last updated: 2026-07-22_
+_Last updated: 2026-07-24_
 
 **Done**
+- **KingsHour lead-magnet + lean email/calendar foundation (2026-07-23):** added a shared
+  calendar action that prefers Google/Outlook web calendar compose links and keeps `.ics` as the
+  Apple/other fallback, replacing the previous browser-download-only action on post-Census and
+  Welcome. Added migration `0003_kingshour_public_email_ops.sql` for public KingsHour pages
+  (`/kingshour/[slug]`), session public-copy/image/aspect fields, registration source fields,
+  email queue state and first-party analytics events. Public KingsHour pages now render published
+  sessions, support `1:1` or `4:5` imagery, and route existing Kings straight into registration
+  while new/incomplete emails see a bridge into the King's Census; Census completion auto-registers
+  them for the intended KingsHour. RSVP links now use the same email-check/Census bridge instead of
+  the old placeholder. Admin session detail now shows public-page readiness, public-page controls,
+  registration source/follow-up state, and invitation/reminder/follow-up actions. Email sending now
+  goes through a provider wrapper, respects a free-tier daily budget (`100` cap, `20` reserved by
+  default), queues overflow, logs communications, and keeps tracking metrics honest. Durable public
+  analytics events now write to Supabase through `/api/events`. Verified: `npx tsc --noEmit`,
+  `npm.cmd run lint`, `git diff --check`. Production build intentionally not run while a dev server
+  may be sharing `.next` on Windows.
+- **Local admin preview mode (2026-07-22):** `next dev` now bypasses Supabase login and TOTP so the
+  admin UI can be built and reviewed without repeatedly authenticating. The bypass is hard-bound to
+  `NODE_ENV=development`; Vercel previews and production builds remain fully gated. The admin rail
+  visibly labels the local session `AUTH BYPASSED` so it cannot be mistaken for deployed security.
+- **Admin operations foundation (2026-07-22):** replaced the read-only admin placeholders with a
+  usable operations desk. Overview now answers what needs attention with live Census, membership,
+  communication and KingsHour data; Kings has search/filtering, pagination and protected CSV export;
+  profiles consolidate Census answers, incomplete progress, KingsHour history and communication
+  history; Insights ranks real struggles, goals, needs and topic requests without inventing metrics.
+  KingsHour supports session creation/editing, inline Topic Bank entry, Meet-link controls,
+  registration monitoring and attendance marking through protected APIs. Lint and the 27-route
+  production build pass; anonymous admin pages and APIs remain gated. Authenticated visual QA awaits
+  a signed-in browser session. These admin changes remain uncommitted until Divine requests a commit.
 - **Post-Census arrival correction (2026-07-22):** the completed Census celebration now renders
   outside `ChapterShell`, removing the `Chapter 6 / 6`, percentage and progress track after the King
   has already finished. Progress remains visible throughout the active Census; the final state now
@@ -329,16 +358,26 @@ _Last updated: 2026-07-22_
   production build were verified locally.
 
 **In progress**
-- (nothing active)
+- Build order step 6 — finish the **KingsHour lifecycle** around the new session controls: invitation,
+  reminder and follow-up email actions, one-click RSVP validation, and lifecycle send state.
+
+**KingsHour lead-magnet registration plan**
+- Every KingsHour should be able to generate a shareable `/kingshour/[slug]` page for flyers,
+  WhatsApp Status, DMs and socials. The public page is the CTA destination for the specific
+  KingsHour, not the generic homepage.
+- Registration flow: existing Kings enter their email and confirm/register quickly; new people enter
+  their email, see one short event-registration bridge screen that explains why the King's Census
+  comes next, complete the Census, then get auto-registered for that KingsHour.
+- Admin planning must control slug, public status, page copy, optional image, image aspect (`1:1` or
+  `4:5` IG-style), Meet-link readiness, invitation, reminder, follow-up, RSVP validation, attendance
+  and lifecycle send state.
 
 **Next**
-- Build order step 6 — the **KingsHour loop**: session entity + admin CRUD, one-click RSVP
-  (`/rsvp/[sessionId]`), attendance marking, and the three lifecycle emails (Invitation/Reminder/
-  Follow-Up, with `.ics`). Since there's no Topic Bank seed or management UI in V1, include a minimal
-  inline "add a topic" in the session-creation flow so topics can be created on the fly.
-- Build order step 7 — **Email page** (segmented sends), plus finishing **Analytics** (funnel + charts)
-  and the remaining admin operations. Admin authentication is already live and gated by approved
-  Supabase identity plus mandatory TOTP AAL2.
+- Apply `supabase/migrations/0003_kingshour_public_email_ops.sql` to the live Supabase project
+  before testing public KingsHour pages or email queue behavior against live data.
+- Build order step 7 — **Email page** (segmented sends with preview/count confirmation and history),
+  plus finishing **Analytics** once funnel events are persisted rather than inferred. Admin
+  authentication remains gated by approved Supabase identity plus mandatory TOTP AAL2.
 - Use only the newest recovery email with subject **“Set your Kingsway admin password.”** It opens
   password creation before authenticator enrolment. Also verify one fresh live Census submission in
   Gmail after this Welcome-email revision; category placement remains recipient-controlled.
@@ -354,6 +393,28 @@ _Last updated: 2026-07-22_
 - GitHub is connected at `thedezignking/kingsway`; this folder is an isolated repository on `main`.
 
 ## Decision log
+
+- **2026-07-23** - Calendar actions on public web surfaces should not rely on `.ics` as the only
+  path. Use Google/Outlook web compose links as the main cross-device path, with `.ics` retained as
+  the Apple/other fallback and as email attachments where clients handle it better.
+- **2026-07-23** - Until Kingsway can pay for Resend Pro, bulk email is budgeted instead of blasted:
+  default cap `100/day`, reserve `20/day` for critical transactional messages, queue non-critical
+  overflow, and use WhatsApp Status, calendar actions and KingsHour pages to reduce reminder email
+  pressure.
+- **2026-07-22** - Treat each KingsHour as both a member ritual and a lead magnet. Admin-created
+  KingsHour sessions need a public `/kingshour/[slug]` destination so flyers and social posts point
+  to a specific registration page, not the generic homepage. Existing Kings register by email; new
+  people get a short context-setting registration bridge before the King's Census, then are
+  auto-registered after completion. Public pages may optionally show an admin-uploaded image with
+  controlled `1:1` or `4:5` aspect so event art works across site and Instagram-style formats.
+
+- **2026-07-22** — Admin authentication may be bypassed only under `next dev`. Do not add a public
+  URL parameter, cookie, client-side switch or production environment flag for bypassing admin auth.
+  Every deployed build—including preview deployments—must retain approved identity + TOTP AAL2.
+- **2026-07-22** — Admin remains operational, neutral and based only on first-party records. Do not
+  display a fabricated email open rate while Resend tracking is disabled, and do not imply funnel
+  analytics exist until those events have durable storage. Topic Bank entries are created manually
+  inside KingsHour planning; no speculative topic seed is introduced.
 
 - **2026-07-22** — Stock people may be used only as clearly documented temporary hero placeholders.
   They must never be represented as actual Kings and should be replaced with consented community

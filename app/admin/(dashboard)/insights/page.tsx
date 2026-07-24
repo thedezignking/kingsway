@@ -12,7 +12,8 @@ export default async function AdminInsightsPage() {
     <section>
       <AdminPageHeader
         title="Insights"
-        description="Patterns from the King’s Census that should influence the next decision."
+        description="Patterns from the King’s Census. Use them as evidence, not automatic answers."
+        meta="Census data"
       />
       {insights.configured ? <InsightsPanels insights={insights} /> : <NotConfigured />}
     </section>

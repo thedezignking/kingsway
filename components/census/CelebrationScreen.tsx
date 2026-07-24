@@ -4,32 +4,16 @@
 "use client";
 
 import { celebration } from "@/lib/census/copy";
-import { buildIcs } from "@/lib/email/ics";
 import { nextKingsHour } from "@/lib/kingshour/schedule";
 import { whatsappLink } from "@/lib/whatsapp";
 import { Crown } from "@/components/shared/Crown";
 import { BRAND_LINE_DISPLAY } from "@/lib/brand";
+import { AddToCalendar } from "@/components/shared/AddToCalendar";
 
 export function CelebrationScreen({ firstName }: { firstName?: string }) {
   const copy = celebration(firstName);
-
-  function addToCalendar() {
-    const start = nextKingsHour();
-    const end = new Date(start.getTime() + 60 * 60 * 1000);
-    const ics = buildIcs({
-      uid: `kingshour-${start.toISOString().slice(0, 10)}@kingsway`,
-      title: "KingsHour",
-      description: "The monthly Kingsway gathering. Link to follow by email.",
-      start,
-      end,
-    });
-    const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "kingshour.ics";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+  const start = nextKingsHour();
+  const end = new Date(start.getTime() + 60 * 60 * 1000);
 
   return (
     <div className="flex flex-col items-center gap-6 py-8 text-center">
@@ -45,13 +29,16 @@ export function CelebrationScreen({ firstName }: { firstName?: string }) {
         ))}
       </div>
       <div className="mt-2 flex w-full max-w-xs flex-col items-stretch gap-3">
-        <button
-          type="button"
-          onClick={addToCalendar}
-          className="rounded-full bg-brass px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:brightness-105 active:translate-y-px"
-        >
-          {copy.calendarCta}
-        </button>
+        <AddToCalendar
+          event={{
+            uid: `kingshour-${start.toISOString().slice(0, 10)}@kingsway`,
+            title: "KingsHour",
+            description: "The monthly Kingsway gathering. The exact join link will come by email.",
+            start,
+            end,
+            url: typeof window === "undefined" ? undefined : window.location.origin,
+          }}
+        />
         <a
           href={whatsappLink()}
           target="_blank"

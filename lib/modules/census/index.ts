@@ -5,6 +5,7 @@
 import "server-only";
 import { createServiceSupabaseOrNull } from "@/lib/supabase/server";
 import { sendWelcome } from "@/lib/modules/communication";
+import { rsvp } from "@/lib/modules/kingshour";
 import { CENSUS_QUESTIONS, CENSUS_VERSION } from "@/lib/census/questions";
 
 export { CENSUS_VERSION };
@@ -16,6 +17,7 @@ export interface SaveCensusInput {
   currentScreen?: string;
   chapter?: number;
   completed?: boolean;
+  sessionId?: string;
 }
 
 export interface CensusResult {
@@ -133,6 +135,9 @@ export async function completeCensus(input: SaveCensusInput): Promise<CensusResu
   const result = await saveCensus({ ...input, completed: true });
   if (result.persisted && result.memberId) {
     await sendWelcome(result.memberId);
+    if (input.sessionId) {
+      await rsvp(input.sessionId, result.memberId, { source: "kingshour_census" });
+    }
   }
   return result;
 }

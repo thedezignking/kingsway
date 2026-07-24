@@ -1,29 +1,29 @@
-// API — admin sessions (PRD §5.4). Thin handler over lib/modules/kingshour.
-//   POST   create a KingsHour session
-//   (GET/PATCH for list/edit + attendance land in the KingsHour build pass)
 import { NextResponse } from "next/server";
 import { can, getAdminAccessState } from "@/lib/modules/auth";
-// import { createSession, listSessions } from "@/lib/modules/kingshour";
+import { createSession, listSessions, type SessionInput } from "@/lib/modules/kingshour";
 
 export async function GET() {
-  const denied = await authorizeSessions();
+  const denied = await authorize();
   if (denied) return denied;
-  return NextResponse.json(
-    { error: "Not implemented", ref: "lib/modules/kingshour.listSessions" },
-    { status: 501 },
-  );
+  try {
+    return NextResponse.json({ sessions: await listSessions() });
+  } catch (error) {
+    return failure(error);
+  }
 }
 
-export async function POST() {
-  const denied = await authorizeSessions();
+export async function POST(request: Request) {
+  const denied = await authorize();
   if (denied) return denied;
-  return NextResponse.json(
-    { error: "Not implemented", ref: "lib/modules/kingshour.createSession" },
-    { status: 501 },
-  );
+  try {
+    const input = (await request.json()) as SessionInput;
+    return NextResponse.json({ session: await createSession(input) }, { status: 201 });
+  } catch (error) {
+    return failure(error, 400);
+  }
 }
 
-async function authorizeSessions(): Promise<NextResponse | null> {
+async function authorize(): Promise<NextResponse | null> {
   const access = await getAdminAccessState();
   if (access.status === "anonymous") {
     return NextResponse.json({ error: "Authentication required" }, { status: 401 });
@@ -32,4 +32,20 @@ async function authorizeSessions(): Promise<NextResponse | null> {
     return NextResponse.json({ error: "Admin access denied" }, { status: 403 });
   }
   return null;
+}
+
+function failure(error: unknown, status = 500) {
+  console.error("Admin session operation failed", error);
+  return NextResponse.json(
+    { error: errorMessage(error, "Session operation failed") },
+    { status },
+  );
+}
+
+function errorMessage(error: unknown, fallback: string): string {
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === "object" && "message" in error) {
+    return String(error.message);
+  }
+  return fallback;
 }

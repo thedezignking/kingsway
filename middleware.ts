@@ -9,6 +9,10 @@ const PUBLIC_ADMIN_PATHS = [
 ];
 
 export async function middleware(request: NextRequest) {
+  // Local design/development preview only. Deployed previews and production run in production mode
+  // and continue through the full Supabase + MFA gate below.
+  if (process.env.NODE_ENV === "development") return NextResponse.next();
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !anonKey) return NextResponse.next();

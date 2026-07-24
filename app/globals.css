@@ -77,6 +77,64 @@ body {
   );
 }
 
+/* ── Admin controls ───────────────────────────────────────────────────────
+   Dense and predictable: one control height, square geometry, visible state. */
+.admin-control {
+  min-height: 40px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.55rem 0.7rem;
+  color: var(--fg);
+  font-size: 0.8125rem;
+  outline: none;
+  transition: border-color 140ms ease-out, box-shadow 140ms ease-out;
+}
+
+.admin-control:hover {
+  border-color: color-mix(in srgb, var(--muted) 48%, var(--line));
+}
+
+.admin-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.admin-button-primary,
+.admin-button-secondary {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background-color 140ms ease-out, border-color 140ms ease-out;
+}
+
+.admin-button-primary {
+  border: 1px solid var(--fg);
+  background: var(--fg);
+  color: var(--bone);
+}
+
+.admin-button-primary:hover {
+  background: color-mix(in srgb, var(--fg) 90%, var(--accent));
+}
+
+.admin-button-secondary {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--fg);
+}
+
+.admin-button-secondary:hover {
+  border-color: color-mix(in srgb, var(--muted) 48%, var(--line));
+  background: #fbfaf7;
+}
+
 /* ── Public landing ─────────────────────────────────────────────────────── */
 .landing-nav {
   animation: nav-arrive 620ms var(--ease-out-expo) both;
@@ -126,6 +184,66 @@ body {
 .primary-pill:active,
 .nav-pill:active {
   transform: scale(0.98);
+}
+
+.calendar-actions {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.calendar-actions__primary {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent);
+  padding: 0.75rem 1.35rem;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition:
+    transform 160ms var(--ease-out-quart),
+    background-color 160ms ease-out;
+}
+
+.calendar-actions__primary:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--accent) 90%, var(--fg));
+}
+
+.calendar-actions__secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.calendar-actions__secondary a,
+.calendar-actions__secondary button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, white 78%, var(--surface));
+  padding: 0.55rem 0.75rem;
+  color: var(--fg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition:
+    transform 160ms var(--ease-out-quart),
+    border-color 160ms ease-out,
+    background-color 160ms ease-out;
+}
+
+.calendar-actions__secondary a:hover,
+.calendar-actions__secondary button:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: var(--accent-soft);
 }
 
 .landing-hero {

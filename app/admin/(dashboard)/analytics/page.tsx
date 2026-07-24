@@ -15,7 +15,7 @@ export default function AdminAnalyticsPage() {
       <StubSection title="Funnel" prd="§5.6 Analytics">
         visitor → census start → completion → welcome → first KingsHour → returning.
       </StubSection>
-      <ChartPanel title="Joins per month · attendance · opens · retention" />
+      <ChartPanel title="Joins per month · attendance · opens · retention" items={[]} />
       <StubSection title="Census drop-off screen (callout)" prd="§5.6" />
     </section>
   );

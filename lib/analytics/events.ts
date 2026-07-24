@@ -28,12 +28,18 @@ export const AnalyticsEvent = {
   // KingsHour (PRD §4.6, §5.6)
   KINGSHOUR_RSVP: "kingshour_rsvp",
   KINGSHOUR_ATTENDED: "kingshour_attended",
+  KINGSHOUR_PAGE_VIEW: "kingshour_page_view",
+  KINGSHOUR_REGISTRATION_STARTED: "kingshour_registration_started",
+  KINGSHOUR_REGISTRATION_CONFIRMED: "kingshour_registration_confirmed",
+  KINGSHOUR_CENSUS_BRIDGE: "kingshour_census_bridge",
 } as const;
 
 export type AnalyticsEventName =
   (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
 
-/** No-op event tracker (stub). Replace with provider call in the analytics pass. */
+export const ANALYTICS_EVENTS = Object.values(AnalyticsEvent);
+
+/** First-party event tracker. It degrades quietly when Supabase is unavailable. */
 export function track(
   event: AnalyticsEventName,
   props?: Record<string, unknown>,
@@ -42,5 +48,16 @@ export function track(
     // eslint-disable-next-line no-console
     console.debug("[analytics]", event, props ?? {});
   }
-  // TODO(analytics): forward to the chosen product-analytics provider.
+  if (typeof window === "undefined") return;
+  const payload = JSON.stringify({ event, props: props ?? {}, path: window.location.pathname });
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("/api/events", new Blob([payload], { type: "application/json" }));
+    return;
+  }
+  void fetch("/api/events", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: payload,
+    keepalive: true,
+  }).catch(() => undefined);
 }
