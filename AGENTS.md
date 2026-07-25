@@ -132,9 +132,22 @@ Until we begin committing to GitHub, update this file at the end of each working
 
 ## Build progress
 
-_Last updated: 2026-07-24_
+_Last updated: 2026-07-25_
 
 **Done**
+- **Admin Operations Desk redesign — Lönar-style, BUILT & verified (2026-07-25):** admin scoped to a
+  **cool neutral palette** (`.admin-scope` in globals.css — white main, grey sidebar `#f7f8fa`,
+  cool-gray borders `#e9eaed`; brass stays the only brand accent). **Full-pill** buttons; **sticky
+  full-height sidebar** with the profile pinned to the bottom; **Heroicons (solid)** for the nav +
+  KPI-card icons ([components/admin/icons.tsx](./components/admin/icons.tsx), `@heroicons/react`);
+  Kings list is Lönar-style — **avatar rows, soft status pills, numbered pagination, whole-row click**
+  ([KingRow](./components/admin/KingRow.tsx), a client `<tr onClick>` since a stretched-link `::after`
+  can't span table cells). **Action colors** for state only: green = Complete/live, amber =
+  Incomplete/attention (no black dot, no random color). Subtle card shadow + unified `rounded-xl`.
+  Member profile shows all Census answers by chapter + KingsHour history + comms timeline. Verified:
+  `npx tsc --noEmit` clean; in-browser via DOM measurements + server logs (preview pane can't
+  screenshot in this env). Iconify/Solar were trialled then removed in favour of Heroicons (offline,
+  no runtime fetch).
 - **KingsHour lead-magnet + lean email/calendar foundation (2026-07-23):** added a shared
   calendar action that prefers Google/Outlook web calendar compose links and keeps `.ics` as the
   Apple/other fallback, replacing the previous browser-download-only action on post-Census and

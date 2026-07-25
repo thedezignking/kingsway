@@ -3,7 +3,7 @@ import type { SessionSummary } from "@/lib/modules/kingshour";
 
 export function SessionList({ sessions }: { sessions: SessionSummary[] }) {
   return (
-    <section className="border border-line bg-white/75">
+    <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
       <header className="flex items-end justify-between gap-4 border-b border-line px-4 py-3">
         <div>
           <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted">Sessions</p>
@@ -91,7 +91,7 @@ function PublicStatus({
   return (
     <span
       className={`font-mono text-[9px] uppercase tracking-[0.08em] ${
-        published ? "text-emerald-700" : "text-muted"
+        published ? "text-emerald-600" : "text-muted"
       }`}
     >
       {published ? "Public page live" : "Public draft"}

@@ -22,7 +22,7 @@ export function MfaEnrollForm({
     <form action={action} className="space-y-5">
       <input type="hidden" name="factorId" value={enrollment.id} />
       <input type="hidden" name="next" value={destination} />
-      <div className="grid place-items-center border border-line bg-[#fbfaf7] p-5">
+      <div className="grid place-items-center border border-line bg-[#f7f8fa] p-5">
         <Image
           src={enrollment.qr}
           alt="QR code for Kingsway Admin two-factor authentication"
@@ -35,7 +35,7 @@ export function MfaEnrollForm({
         <p>Scan this with Google Authenticator, 1Password, Authy, or another TOTP app.</p>
         <details className="mt-2">
           <summary className="cursor-pointer text-xs font-semibold text-fg">Enter key manually</summary>
-          <code className="mt-2 block break-all rounded bg-[#f1eee6] p-2 font-mono text-xs text-fg">
+          <code className="mt-2 block break-all rounded bg-[#f4f5f7] p-2 font-mono text-xs text-fg">
             {enrollment.secret}
           </code>
         </details>
@@ -79,7 +79,7 @@ export function CodeField({
         maxLength={6}
         value={code}
         onChange={(event) => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))}
-        className="w-full rounded-md border border-line bg-[#fbfaf7] px-3.5 py-3 text-center font-mono text-xl tracking-[0.35em] outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
+        className="w-full rounded-md border border-line bg-[#f7f8fa] px-3.5 py-3 text-center font-mono text-xl tracking-[0.35em] outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
         aria-describedby="code-help"
         required
       />

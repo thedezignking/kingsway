@@ -15,7 +15,7 @@ export function MemberProfile({ profile }: { profile: Profile }) {
   return (
     <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_310px]">
       <div className="min-w-0 space-y-4">
-        <section className="border border-line bg-white/75">
+        <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
           <header className="border-b border-line px-4 py-3">
             <h2 className="text-sm font-semibold">Builder profile</h2>
           </header>
@@ -29,7 +29,7 @@ export function MemberProfile({ profile }: { profile: Profile }) {
           </dl>
         </section>
 
-        <section className="border border-line bg-white/75">
+        <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
           <header className="flex items-center justify-between gap-4 border-b border-line px-4 py-3">
             <div>
               <h2 className="text-sm font-semibold">King&apos;s Census</h2>
@@ -55,13 +55,13 @@ export function MemberProfile({ profile }: { profile: Profile }) {
                 if (!chapterResponses.length) return null;
                 return (
                   <details key={chapter.index} className="group" open={chapter.index === 1}>
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-sm font-medium hover:bg-[#fbfaf7]">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-sm font-medium hover:bg-[#f7f8fa]">
                       <span>{chapter.name}</span>
                       <span className="font-mono text-[10px] text-muted group-open:text-brass">
                         {chapterResponses.length} answers
                       </span>
                     </summary>
-                    <dl className="border-t border-line/70 bg-[#fbfaf7]/60 px-4 pb-2">
+                    <dl className="border-t border-line/70 bg-[#f7f8fa]/60 px-4 pb-2">
                       {chapterResponses.map((response) => (
                         <div
                           key={`${response.question_id}-${response.question_version}`}
@@ -83,7 +83,7 @@ export function MemberProfile({ profile }: { profile: Profile }) {
           )}
         </section>
 
-        <section className="border border-line bg-white/75">
+        <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
           <header className="border-b border-line px-4 py-3">
             <h2 className="text-sm font-semibold">KingsHour history</h2>
           </header>
@@ -125,7 +125,7 @@ export function MemberProfile({ profile }: { profile: Profile }) {
       </div>
 
       <aside className="space-y-4">
-        <section className="border border-line bg-white/75">
+        <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
           <header className="border-b border-line px-4 py-3">
             <h2 className="text-sm font-semibold">Record</h2>
           </header>
@@ -154,7 +154,7 @@ export function MemberProfile({ profile }: { profile: Profile }) {
           </div>
         </section>
 
-        <section className="border border-line bg-white/75">
+        <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
           <header className="flex items-center justify-between border-b border-line px-4 py-3">
             <h2 className="text-sm font-semibold">Communication</h2>
             <span className="font-mono text-[10px] text-muted">{communications.length}</span>
@@ -187,13 +187,18 @@ export function MemberProfile({ profile }: { profile: Profile }) {
 }
 
 function Status({ status }: { status: "king" | "incomplete" }) {
+  const complete = status === "king";
   return (
     <span
-      className={`rounded-sm px-2 py-1 font-mono text-[9px] uppercase tracking-wide ${
-        status === "king" ? "bg-emerald-50 text-emerald-800" : "bg-brass-soft text-fg"
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[9px] uppercase tracking-wide ${
+        complete ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
       }`}
     >
-      {status === "king" ? "Complete" : "Incomplete"}
+      <span
+        className={`h-1.5 w-1.5 rounded-full ${complete ? "bg-emerald-500" : "bg-amber-500"}`}
+        aria-hidden="true"
+      />
+      {complete ? "Complete" : "Incomplete"}
     </span>
   );
 }

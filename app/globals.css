@@ -77,13 +77,25 @@ body {
   );
 }
 
+/* ── Admin surface palette ────────────────────────────────────────────────
+   The admin uses a cool, near-white neutral (not the warm member-facing porcelain).
+   Scoped to .admin-scope so the public site keeps its warm tokens. Brass unchanged. */
+.admin-scope {
+  --surface: #ffffff;
+  --surface-2: #f5f6f8;
+  --fg: #1a1c1f;
+  --muted: #6b7280;
+  --line: #e9eaed;
+}
+
 /* ── Admin controls ───────────────────────────────────────────────────────
-   Dense and predictable: one control height, square geometry, visible state. */
+   Dense and predictable: one control height, rounded to match the product system
+   (operational, not the member-facing full pill), visible state. */
 .admin-control {
   min-height: 40px;
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 0.25rem;
+  border-radius: 0.625rem;
   background: rgba(255, 255, 255, 0.92);
   padding: 0.55rem 0.7rem;
   color: var(--fg);
@@ -107,8 +119,8 @@ body {
   min-height: 40px;
   align-items: center;
   justify-content: center;
-  border-radius: 0.25rem;
-  padding: 0.55rem 0.9rem;
+  border-radius: 9999px; /* full pill — carries the product button language */
+  padding: 0.55rem 1.15rem;
   font-size: 0.8125rem;
   font-weight: 600;
   transition: background-color 140ms ease-out, border-color 140ms ease-out;

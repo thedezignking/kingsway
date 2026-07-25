@@ -27,7 +27,7 @@ export function LoginForm({ destination }: { destination: string }) {
             name="password"
             autoComplete="current-password"
             required
-            className="w-full rounded-md border border-line bg-[#fbfaf7] px-3.5 py-3 text-sm outline-none transition-colors hover:border-muted/50 focus:border-brass focus:ring-2 focus:ring-brass/15"
+            className="w-full rounded-md border border-line bg-[#f7f8fa] px-3.5 py-3 text-sm outline-none transition-colors hover:border-muted/50 focus:border-brass focus:ring-2 focus:ring-brass/15"
           />
         </label>
         <p className="min-h-5 text-sm text-red-700" role="status" aria-live="polite">
@@ -45,7 +45,7 @@ export function LoginForm({ destination }: { destination: string }) {
       </div>
 
       {resetState.sent ? (
-        <div role="status" className="border-l-2 border-brass bg-[#fbfaf7] p-4">
+        <div role="status" className="border-l-2 border-brass bg-[#f7f8fa] p-4">
           <p className="text-sm font-semibold">Check your email</p>
           <p className="mt-1 text-sm leading-relaxed text-muted">
             If that address is approved, its password setup link is on the way.
@@ -76,7 +76,7 @@ function EmailField({ autoFocus = true }: { autoFocus?: boolean }) {
         spellCheck={false}
         required
         autoFocus={autoFocus}
-        className="w-full rounded-md border border-line bg-[#fbfaf7] px-3.5 py-3 text-sm outline-none transition-colors placeholder:text-muted/50 hover:border-muted/50 focus:border-brass focus:ring-2 focus:ring-brass/15"
+        className="w-full rounded-md border border-line bg-[#f7f8fa] px-3.5 py-3 text-sm outline-none transition-colors placeholder:text-muted/50 hover:border-muted/50 focus:border-brass focus:ring-2 focus:ring-brass/15"
         placeholder="you@company.com"
       />
     </label>

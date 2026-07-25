@@ -10,7 +10,7 @@ export function ChartPanel({
   caption?: string;
 }) {
   return (
-    <section className="border border-line bg-white/75" aria-label={title}>
+    <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]" aria-label={title}>
       <header className="flex items-end justify-between gap-4 border-b border-line px-4 py-3">
         <div>
           <h2 className="text-sm font-semibold">{title}</h2>

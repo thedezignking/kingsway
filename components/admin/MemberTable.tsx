@@ -1,7 +1,9 @@
-// Admin / MemberTable (PRD §5.2). Search, Census-backed filters, pagination and export.
+// Admin / MemberTable (PRD §5.2). Search, Census-backed filters, clickable rows, pagination, export.
+// Lönar-style presentation in Kingsway's palette: avatar rows, soft status pills, numbered pages.
 import Link from "next/link";
 import { getQuestion } from "@/lib/census/questions";
 import type { MemberFilter, MemberListResult } from "@/lib/modules/members";
+import { KingRow } from "./KingRow";
 
 export function MemberTable({ result, active }: { result: MemberListResult; active: MemberFilter }) {
   const hasFilters = !!(
@@ -15,7 +17,7 @@ export function MemberTable({ result, active }: { result: MemberListResult; acti
 
   return (
     <div className="flex flex-col gap-4">
-      <form className="border border-line bg-white/75 p-3" aria-label="Filter Kings">
+      <form className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)] p-3" aria-label="Filter Kings">
         <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-[minmax(220px,1.5fr)_repeat(4,minmax(130px,1fr))]">
           <Field label="Search">
             <input
@@ -85,7 +87,7 @@ export function MemberTable({ result, active }: { result: MemberListResult; acti
 
       <div className="flex items-baseline justify-between gap-4">
         <p className="text-sm font-medium">
-          {result.total} {result.total === 1 ? "record" : "records"}
+          {result.total} {result.total === 1 ? "King" : "Kings"}
         </p>
         <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
           Page {result.page} of {result.pageCount}
@@ -93,86 +95,86 @@ export function MemberTable({ result, active }: { result: MemberListResult; acti
       </div>
 
       {result.members.length === 0 ? (
-        <div className="border border-dashed border-line bg-white/40 px-5 py-10">
+        <div className="rounded-xl border border-dashed border-line bg-white px-5 py-12 text-center">
           <p className="text-sm font-medium">No matching Kings.</p>
           <p className="mt-1 text-xs text-muted">Clear one or more filters and try again.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto border border-line bg-white/75">
-          <table className="w-full min-w-[760px] text-left text-sm">
-            <thead className="border-b border-line bg-[#f1eee6]/70 font-mono text-[10px] uppercase tracking-wider text-muted">
-              <tr>
-                <th className="px-4 py-3 font-medium">King</th>
-                <th className="px-4 py-3 font-medium">Builder profile</th>
-                <th className="px-4 py-3 font-medium">Current residence</th>
-                <th className="px-4 py-3 font-medium">Census</th>
-                <th className="px-4 py-3 text-right font-medium">Joined</th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.members.map((member) => (
-                <tr
-                  key={member.id}
-                  className="border-t border-line transition-colors first:border-t-0 hover:bg-[#fbfaf7]"
-                >
-                  <td className="px-4 py-3 align-top">
-                    <Link href={`/admin/kings/${member.id}`} className="font-semibold hover:underline">
-                      {member.first_name}
-                    </Link>
-                    <div className="mt-0.5 max-w-56 truncate text-xs text-muted">{member.email}</div>
-                  </td>
-                  <td className="px-4 py-3 align-top">
-                    <div>{member.occupation || optionLabel("season", member.season) || "—"}</div>
-                    {member.interests.length > 0 && (
-                      <div className="mt-1 max-w-64 truncate text-xs text-muted">
-                        {member.interests.map((value) => optionLabel("topics", value)).join(" · ")}
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 align-top">
-                    <div>{member.country ?? "—"}</div>
-                    {member.state_city && <div className="mt-0.5 text-xs text-muted">{member.state_city}</div>}
-                  </td>
-                  <td className="px-4 py-3 align-top">
-                    <Status status={member.status} />
-                  </td>
-                  <td className="px-4 py-3 text-right align-top font-mono text-xs text-muted">
-                    {new Date(member.join_date).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </td>
+        <div className="overflow-hidden rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[720px] text-left text-sm">
+              <thead className="border-b border-line font-mono text-[10px] uppercase tracking-wider text-muted">
+                <tr>
+                  <th className="px-5 py-3.5 font-medium">King</th>
+                  <th className="px-5 py-3.5 font-medium">Builder profile</th>
+                  <th className="px-5 py-3.5 font-medium">Residence</th>
+                  <th className="px-5 py-3.5 font-medium">Joined</th>
+                  <th className="px-5 py-3.5 font-medium">Census</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {result.members.map((member) => (
+                  <KingRow key={member.id} href={`/admin/kings/${member.id}`}>
+                    <td className="px-5 py-4 align-middle">
+                      <div className="flex items-center gap-3">
+                        <Avatar name={member.first_name} />
+                        <div className="min-w-0">
+                          <Link
+                            href={`/admin/kings/${member.id}`}
+                            className="font-semibold hover:underline"
+                          >
+                            {member.first_name}
+                          </Link>
+                          <div className="max-w-56 truncate text-xs text-muted">{member.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-4 align-middle">
+                      <div className="truncate">
+                        {member.occupation || optionLabel("season", member.season) || "—"}
+                      </div>
+                      {member.interests.length > 0 && (
+                        <div className="mt-0.5 max-w-64 truncate text-xs text-muted">
+                          {member.interests.map((value) => optionLabel("topics", value)).join(" · ")}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-5 py-4 align-middle">
+                      <div>{member.country ?? "—"}</div>
+                      {member.state_city && (
+                        <div className="text-xs text-muted">{member.state_city}</div>
+                      )}
+                    </td>
+                    <td className="px-5 py-4 align-middle font-mono text-xs text-muted">
+                      {new Date(member.join_date).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </td>
+                    <td className="px-5 py-4 align-middle">
+                      <Status status={member.status} />
+                    </td>
+                  </KingRow>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
       {result.pageCount > 1 && (
-        <nav className="flex items-center justify-between border-t border-line pt-3" aria-label="Kings pages">
-          {result.page > 1 ? (
-            <Link
-              href={`/admin/kings?${createQuery(active, result.page - 1)}`}
-              className="admin-button-secondary"
-            >
-              Previous
-            </Link>
-          ) : (
-            <span />
-          )}
-          {result.page < result.pageCount && (
-            <Link
-              href={`/admin/kings?${createQuery(active, result.page + 1)}`}
-              className="admin-button-secondary"
-            >
-              Next
-            </Link>
-          )}
-        </nav>
+        <Pagination page={result.page} pageCount={result.pageCount} active={active} />
       )}
     </div>
+  );
+}
+
+function Avatar({ name }: { name: string }) {
+  return (
+    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brass-soft/60 text-sm font-semibold text-fg">
+      {name.charAt(0).toUpperCase()}
+    </span>
   );
 }
 
@@ -188,19 +190,120 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 function Status({ status }: { status: "king" | "incomplete" }) {
+  const complete = status === "king";
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-sm px-2 py-1 font-mono text-[10px] uppercase tracking-wide ${
-        status === "king" ? "bg-emerald-50 text-emerald-800" : "bg-brass-soft/60 text-fg"
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide ${
+        complete ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
       }`}
     >
       <span
-        className={`h-1.5 w-1.5 rounded-full ${status === "king" ? "bg-emerald-600" : "bg-brass"}`}
+        className={`h-1.5 w-1.5 rounded-full ${complete ? "bg-emerald-500" : "bg-amber-500"}`}
         aria-hidden="true"
       />
-      {status === "king" ? "Complete" : "Incomplete"}
+      {complete ? "Complete" : "Incomplete"}
     </span>
   );
+}
+
+// ── Numbered pagination (1 2 3 … last), active page in brass ──────────────
+function Pagination({
+  page,
+  pageCount,
+  active,
+}: {
+  page: number;
+  pageCount: number;
+  active: MemberFilter;
+}) {
+  return (
+    <nav className="flex items-center justify-center gap-1.5 pt-2" aria-label="Kings pages">
+      <PageArrow href={page > 1 ? `/admin/kings?${createQuery(active, page - 1)}` : null} label="Previous">
+        ‹
+      </PageArrow>
+      {pageItems(page, pageCount).map((item, i) =>
+        item === "…" ? (
+          <span key={`gap-${i}`} className="px-1 text-sm text-muted">
+            …
+          </span>
+        ) : (
+          <PageDot
+            key={item}
+            n={item}
+            active={item === page}
+            href={`/admin/kings?${createQuery(active, item)}`}
+          />
+        ),
+      )}
+      <PageArrow href={page < pageCount ? `/admin/kings?${createQuery(active, page + 1)}` : null} label="Next">
+        ›
+      </PageArrow>
+    </nav>
+  );
+}
+
+function PageDot({ n, active, href }: { n: number; active: boolean; href: string }) {
+  if (active) {
+    return (
+      <span
+        aria-current="page"
+        className="flex h-9 w-9 items-center justify-center rounded-full bg-brass text-sm font-semibold text-white"
+      >
+        {n}
+      </span>
+    );
+  }
+  return (
+    <Link
+      href={href}
+      className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-sm text-muted transition hover:border-brass/50 hover:text-fg"
+    >
+      {n}
+    </Link>
+  );
+}
+
+function PageArrow({
+  href,
+  label,
+  children,
+}: {
+  href: string | null;
+  label: string;
+  children: React.ReactNode;
+}) {
+  const cls =
+    "flex h-9 w-9 items-center justify-center rounded-full border border-line text-base transition";
+  if (!href) {
+    return (
+      <span className={`${cls} cursor-not-allowed text-muted/40`} aria-hidden="true">
+        {children}
+      </span>
+    );
+  }
+  return (
+    <Link href={href} aria-label={label} className={`${cls} text-muted hover:border-brass/50 hover:text-fg`}>
+      {children}
+    </Link>
+  );
+}
+
+/** Compact page list: 1 … around-current … last. */
+function pageItems(current: number, total: number): (number | "…")[] {
+  const out: (number | "…")[] = [];
+  const push = (n: number) => out.push(n);
+  const window = 1;
+  const first = 1;
+  const last = total;
+  const from = Math.max(first, current - window);
+  const to = Math.min(last, current + window);
+
+  push(first);
+  if (from > first + 1) out.push("…");
+  for (let n = Math.max(first + 1, from); n <= Math.min(last - 1, to); n++) push(n);
+  if (to < last - 1) out.push("…");
+  if (last > first) push(last);
+  return out;
 }
 
 function optionLabel(questionId: string, value: string | null): string | null {

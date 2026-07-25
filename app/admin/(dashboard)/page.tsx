@@ -2,6 +2,14 @@
 // Live operational metrics and first-party distributions from the analytics module.
 import { getOverviewStats } from "@/lib/modules/analytics";
 import { StatCard } from "@/components/admin/StatCard";
+import {
+  KingsIcon,
+  JoinedIcon,
+  CensusIcon,
+  KingsHourIcon,
+  AttendanceIcon,
+  EmailIcon,
+} from "@/components/admin/icons";
 import { ChartPanel } from "@/components/admin/ChartPanel";
 import { AttentionQueue } from "@/components/admin/AttentionQueue";
 import { NotConfigured } from "@/components/admin/NotConfigured";
@@ -28,19 +36,21 @@ export default async function AdminOverviewPage() {
           <AttentionQueue items={stats.attention} />
 
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
-            <StatCard label="Total Kings" value={stats.totalKings} />
-            <StatCard label="Joined this week" value={stats.joinedThisWeek} />
-            <StatCard label="Census complete" value={`${stats.censusCompletionRate}%`} />
-            <StatCard label="Days to KingsHour" value={stats.daysToKingsHour} />
+            <StatCard label="Total Kings" value={stats.totalKings} icon={KingsIcon} />
+            <StatCard label="Joined this week" value={stats.joinedThisWeek} icon={JoinedIcon} />
+            <StatCard label="Census complete" value={`${stats.censusCompletionRate}%`} icon={CensusIcon} />
+            <StatCard label="Days to KingsHour" value={stats.daysToKingsHour} icon={KingsHourIcon} />
             <StatCard
               label="Attendance"
               value={stats.attendanceRate === null ? "—" : `${stats.attendanceRate}%`}
               hint={stats.attendanceRate === null ? "No marked sessions" : "Marked attendance"}
+              icon={AttendanceIcon}
             />
             <StatCard
               label="Last email"
               value={stats.lastEmailAt ? shortDate(stats.lastEmailAt) : "—"}
               hint="Open tracking remains off"
+              icon={EmailIcon}
             />
           </div>
 
@@ -66,7 +76,7 @@ export default async function AdminOverviewPage() {
 
 function Signal({ label, value }: { label: string; value: string | null }) {
   return (
-    <section className="border border-line bg-white/75 px-4 py-4">
+    <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)] px-4 py-4">
       <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted">{label}</p>
       <p className="mt-2 line-clamp-2 text-sm font-medium leading-relaxed">{value ?? "Not enough data yet"}</p>
     </section>

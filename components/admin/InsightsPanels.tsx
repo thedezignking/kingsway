@@ -4,7 +4,7 @@ import type { Insights, Ranked } from "@/lib/modules/analytics";
 export function InsightsPanels({ insights }: { insights: Insights }) {
   return (
     <div className="space-y-3">
-      <section className="grid border border-line bg-white/75 sm:grid-cols-3">
+      <section className="grid rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)] sm:grid-cols-3">
         <Signal label="Complete Kings" value={String(insights.totalKings)} />
         <Signal
           label="Country momentum"
@@ -58,7 +58,7 @@ function RankedPanel({
 }) {
   const max = Math.max(...items.map((item) => item.count), 1);
   return (
-    <section className="border border-line bg-white/75">
+    <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
       <header className="border-b border-line px-4 py-3">
         <h2 className="text-sm font-semibold">{title}</h2>
         <p className="mt-0.5 text-xs text-muted">{description}</p>

@@ -23,7 +23,7 @@ export function PasswordUpdateForm({ destination }: { destination: string }) {
           minLength={14}
           required
           autoFocus
-          className="w-full rounded-md border border-line bg-[#fbfaf7] px-3.5 py-3 text-sm outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
+          className="w-full rounded-md border border-line bg-[#f7f8fa] px-3.5 py-3 text-sm outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
         />
         <span className="mt-2 block text-xs text-muted">At least 14 characters. A passphrase works well.</span>
       </label>
@@ -35,7 +35,7 @@ export function PasswordUpdateForm({ destination }: { destination: string }) {
           autoComplete="new-password"
           minLength={14}
           required
-          className="w-full rounded-md border border-line bg-[#fbfaf7] px-3.5 py-3 text-sm outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
+          className="w-full rounded-md border border-line bg-[#f7f8fa] px-3.5 py-3 text-sm outline-none transition-colors focus:border-brass focus:ring-2 focus:ring-brass/15"
         />
       </label>
       <p className="min-h-5 text-sm text-red-700" role="status" aria-live="polite">

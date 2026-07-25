@@ -3,7 +3,7 @@ import type { AttentionItem } from "@/lib/modules/analytics";
 
 export function AttentionQueue({ items }: { items: AttentionItem[] }) {
   return (
-    <section className="mb-5 border border-line bg-white/75" aria-labelledby="attention-title">
+    <section className="mb-5 rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]" aria-labelledby="attention-title">
       <header className="flex items-center justify-between border-b border-line px-4 py-3">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted">Today</p>
@@ -12,7 +12,7 @@ export function AttentionQueue({ items }: { items: AttentionItem[] }) {
           </h2>
         </div>
         <span
-          className={`h-2 w-2 rounded-full ${items.length ? "bg-brass" : "bg-emerald-600"}`}
+          className={`h-2 w-2 rounded-full ${items.length ? "bg-amber-500" : "bg-emerald-500"}`}
           aria-hidden="true"
         />
       </header>
@@ -25,7 +25,7 @@ export function AttentionQueue({ items }: { items: AttentionItem[] }) {
             <li key={`${item.href}-${item.label}`}>
               <Link
                 href={item.href}
-                className="grid gap-2 px-4 py-3 transition-colors hover:bg-[#fbfaf7] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center sm:gap-4"
+                className="grid gap-2 px-4 py-3 transition-colors hover:bg-[#f7f8fa] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center sm:gap-4"
               >
                 <span
                   className={`h-1.5 w-1.5 rounded-full ${

@@ -84,7 +84,7 @@ export function SessionForm({
   }
 
   return (
-    <section className="border border-line bg-white/75">
+    <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
       <header className="border-b border-line px-4 py-3">
         <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted">
           {session ? "Session record" : "New session"}
@@ -301,7 +301,7 @@ function InlineTopicForm() {
   }
 
   return (
-    <details className="border-t border-line bg-[#fbfaf7]/70">
+    <details className="border-t border-line bg-[#f7f8fa]/70">
       <summary className="cursor-pointer list-none px-4 py-3 text-xs font-semibold hover:bg-[#f7f5ef]">
         Add a topic to the bank
       </summary>

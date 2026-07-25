@@ -58,7 +58,7 @@ export function EmailComposer() {
   }
 
   return (
-    <section className="border border-line bg-white/75">
+    <section className="rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.045)]">
       <header className="border-b border-line px-4 py-3">
         <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted">Lean email</p>
         <h2 className="mt-0.5 text-sm font-semibold">Send a purposeful update</h2>
@@ -101,7 +101,7 @@ export function EmailComposer() {
         </div>
 
         {preview && (
-          <div className="grid gap-2 border border-line bg-[#fbfaf7] p-3 text-xs sm:grid-cols-4">
+          <div className="grid gap-2 border border-line bg-[#f7f8fa] p-3 text-xs sm:grid-cols-4">
             <Metric label="Recipients" value={preview.recipientCount} />
             <Metric label="Bulk remaining" value={preview.budget.bulkRemaining} />
             <Metric label="Used today" value={preview.budget.usedToday} />
