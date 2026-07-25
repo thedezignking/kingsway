@@ -108,7 +108,7 @@ export function AdminShell({
           </header>
 
           <main id="admin-content" className="min-w-0 flex-1 p-5 sm:p-8">
-            <div className="mx-auto max-w-6xl">{children}</div>
+            {children}
           </main>
         </div>
       </div>
