@@ -12,8 +12,12 @@ export function AdminNav({ items }: { items: readonly NavItem[] }) {
   return (
     <nav className="flex gap-1 overflow-x-auto p-3 md:block md:space-y-0.5" aria-label="Admin">
       {items.map((item) => {
+        // Exact match, or a sub-route (trailing slash) — so "/admin/kings" does NOT match
+        // "/admin/kingshour", but "/admin/kings/[id]" still does.
         const active =
-          item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
+          item.href === "/admin"
+            ? pathname === "/admin"
+            : pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Glyph = Icon[item.icon];
         return (
           <Link

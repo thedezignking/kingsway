@@ -149,6 +149,8 @@ _Last updated: 2026-07-25_
   screenshot in this env). Iconify/Solar were trialled then removed in favour of Heroicons (offline,
   no runtime fetch). Admin content **fills the full content column** (removed the `max-w-6xl` cap that
   centered content with a right gutter); a generous `max-w-[1560px]` outer ceiling remains for ultra-wide.
+  Nav active-state matches the exact path or a sub-route (`href` or `href + "/"`) so `/admin/kings`
+  no longer lights up on `/admin/kingshour`.
 - **KingsHour lead-magnet + lean email/calendar foundation (2026-07-23):** added a shared
   calendar action that prefers Google/Outlook web calendar compose links and keeps `.ics` as the
   Apple/other fallback, replacing the previous browser-download-only action on post-Census and
